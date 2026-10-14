@@ -1,0 +1,143 @@
+\section{Proof of the delooping assertion of Theorem~\ref{thm:main}}\label{sec:construction}
+
+The inputs are the fibre sequences $F\to E_c\xrightarrow{t_c}P_c$ of \S\ref{sec:truncation}, with simply connected bases and specified common fibre $F\simeq S^3$, together with the contractions $L_3E_O\simeq1$ and $L_{10}E_I\simeq1$ from \S\ref{sec:homology}. Fibre preservation and arithmetic fracture give a pointed connected type $B$ and a pointed equivalence $\Omega B\eqp S^3$.
+
+\subsection{Localization conventions}\label{sec:local-tools}
+For $m\geq1$, write $L_m=L_{d_m}$ for localization inverting $m$, where $d_m:S^1\to S^1$ has degree $m$, and write $\eta^m_X:X\to L_mX$ for its unit. This is the $\mathsf{deg}(S)$-localization for the constant sequence $S(k)=m$. A type is $m$-local exactly when $p\mapsto p^m$ is an equivalence on each loop type \cite[Lemma~4.2]{cors}. A map $g:A\to D$ is an \emph{$L_m$-equivalence} if $L_mg$ is an equivalence; equivalently, precomposition $g^*:\Map(D,Z)\to\Map(A,Z)$ is an equivalence for every $m$-local $Z$ \cite[Lemma~2.9]{cors}. A type $A$ is \emph{$L_m$-connected} if $L_mA\simeq1$.
+
+For $m$-local $Z$, restriction along $\eta^m_X$ gives $\Map(L_mX,Z)\simeq\Map(X,Z)$; taking fibres of evaluation gives the pointed version. Local types are closed under identity types and fibres of maps between local types \cite[\S2.1]{cors}, and $L_m$ preserves connectedness in every degree \cite[Corollary~4.14]{cors}. The local Moore contractions and two-stage nullity argument are Corollary~\ref{cor:moore-null} and Lemma~\ref{lem:two-stage-null}. Their application in Corollary~\ref{cor:local-totals} gives
+\begin{equation}\label{eq:local-totals}
+L_3E_O\simeq1,\qquad L_{10}E_I\simeq1.
+\end{equation}
+
+\subsection{Fibre preservation}\label{sec:fibres}
+The following is the fibre-preservation statement in \cite[\S4, observation following Proposition~4.10]{scoccola}, specialized to the constant degree family. The earlier \cite[Lemma~4.16]{cors} assumes that both the base and total space are simply connected; Scoccola's statement requires only the base.
+\begin{theorem}[Fibre preservation over a simply connected base]\label{thm:local-fibre}
+Let $f:E\to Y$, where $Y$ is simply connected. For every $y:Y$ the canonical comparison
+\begin{equation}\label{eq:local-fibre}
+\lambda_{f,y}:L_m\fib(f,y)\xrightarrow{\simeq}\fib(L_mf,\eta^m_Yy)
+\end{equation}
+is an equivalence. There is no connectedness assumption on $E$ or on the fibre.
+\end{theorem}
+\begin{proof}
+Put $L'_m=L_{\Sigma d_m}$, with unit $\eta'^m_X:X\to L'_mX$. This is the separated reflection: a type is $L'_m$-local precisely when its identity types are $m$-local \cite[Lemma~2.15]{cors}. Proposition~4.7 of \cite{scoccola} extends the family $y\mapsto L_m\fib(f,y)$ to an $m$-local-valued family over $L'_mY$, with total space $E'$ and an $L_m$-equivalence $E\to E'$. Since $Y$ is simply connected, Proposition~4.3 of \cite{scoccola} identifies $L'_mY$ with $L_mY$ compatibly with units. This base remains simply connected by \cite[Corollary~4.14]{cors}. Lemma~4.9 of \cite{scoccola} makes $E'$ local, so $E\to E'$ identifies it with $L_mE$ over $L_mY$. Its fibres give the asserted equivalence.
+\end{proof}
+For later compatibility we specify the comparison. If $\nu_f(e):L_mf(\eta^m_Ee)=\eta^m_Y(fe)$ is unit naturality, $\lambda_{f,y}$ is the unique extension into the local target in \eqref{eq:local-fibre} of
+\[
+(e,p)\longmapsto\bigl(\eta^m_Ee,\nu_f(e)\cdot\operatorname{ap}_{\eta^m_Y}(p)\bigr).
+\]
+Thus this formula is its computation on units, with the specified naturality path.
+
+\begin{corollary}[Local delooping machine]\label{cor:local-machine}
+Suppose $f:E\to Y$ has points $e_0,y_0$ and a specified path $s:f(e_0)=y_0$. If $Y$ is simply connected and $L_mE$ is contractible, then
+\[
+\Omega(L_mY,\eta^m_Yy_0)\simeq L_m\fib(f,y_0).
+\]
+\end{corollary}
+\begin{proof}
+Use \eqref{eq:local-fibre}, centre the contraction at $\eta^m_Ee_0$, and identify its fibre with loops using $\nu_f(e_0)\cdot\operatorname{ap}_{\eta^m_Y}(s)$. This retains the specified pointing path.
+\end{proof}
+
+\subsection{Arithmetic fracture}\label{sec:fracture}
+For positive integers $m,n$, the type $L_{mn}X$ is both $m$-local and $n$-local. The localization mapping property therefore supplies maps and specified homotopies
+\[
+\begin{aligned}
+j_m &: L_mX\longrightarrow L_{mn}X,
+& h_m &: j_m\eta^m_X\sim\eta^{mn}_X,\\
+j_n &: L_nX\longrightarrow L_{mn}X,
+& h_n &: j_n\eta^n_X\sim\eta^{mn}_X.
+\end{aligned}
+\]
+\begin{theorem}[Arithmetic fracture {\cite[Theorem~5.4]{scoccola}}]\label{thm:fracture}
+Let $X$ be simply connected and $m,n\geq1$. If $am+bn=1$ for integers $a,b$, then the map
+\begin{equation}\label{eq:fracture-map}
+\begin{aligned}
+\gamma_X &: X\longrightarrow L_mX\hpb_{L_{mn}X}L_nX,\\
+\gamma_X(x)&=\bigl(\eta^m_Xx,\eta^n_Xx,h_m(x)\cdot h_n(x)^{-1}\bigr)
+\end{aligned}
+\end{equation}
+is an equivalence.
+\end{theorem}
+To specialize the cited theorem, take the constant sequences $R_k=n$, $S_k=m$ and their pointwise product $T_k=mn$. Its cross-coprimality hypothesis says that every $R_k$ is coprime to every $S_l$, here exactly $\gcd(m,n)=1$. Lemma~5.1 of \cite{scoccola} identifies the composites through $L_mX$ and $L_nX$ as $L_{mn}$-localizations, giving unit-compatible comparisons with the iterated localizations in that theorem. Thus its pullback map is \eqref{eq:fracture-map}. The formalization proves the $2$-connected case, which covers the instance $X=F\simeq S^3$ used here.
+
+For $m=3$, $n=10$, take $a=7$ and $b=-2$, so $3\cdot7+10\cdot(-2)=1$. The resulting fracture square is
+\begin{equation}\label{eq:sphere-fracture}
+\begin{tikzcd}[column sep=large,row sep=large]
+S^3 \arrow[r,"\eta^3_{S^3}"] \arrow[d,"\eta^{10}_{S^3}"'] \pbmark & L_3S^3 \arrow[d,"j_3"] \\
+L_{10}S^3 \arrow[r,"j_{10}"'] & L_{30}S^3.
+\end{tikzcd}
+\end{equation}
+
+\subsection{The common comparison}\label{sec:common}
+Keep $R=\RP^2$, $\baseN=\trunc2R$, and the specified common fibre $F\simeq S^3$ of \S\ref{sec:truncation}. Form
+\[
+\begin{tikzcd}[column sep=large,row sep=large]
+R \arrow[r] \arrow[d] \pomark & E_I \arrow[d] \\
+E_O \arrow[r] & E_*
+\end{tikzcd}
+\qquad
+\begin{tikzcd}[column sep=large,row sep=large]
+\baseN \arrow[r] \arrow[d] \pomark & P_I \arrow[d] \\
+P_O \arrow[r] & P_*.
+\end{tikzcd}
+\]
+Cartesian descent applied to the two squares $R\to E_c$ over $\baseN\to P_c$ gives $F\to E_*\xrightarrow{t_*}P_*$. The induced maps from the $O$ and $I$ fibre sequences are the identity in the specified $F$ coordinate. Moreover, $P_*$ is simply connected: $P_O,P_I$ are simply connected, $\baseN$ is connected, and the pushout van Kampen theorem gives a contractible $1$-truncation.
+
+The cofibre presentation $R=\RP^2\simeq\Moore21$ and Corollary~\ref{cor:moore-null} give $L_{30}R\simeq1$. Every $30$-local type $Z$ is $3$-local and $10$-local, since the corresponding commuting power maps compose to the thirtieth-power equivalence. Together with \eqref{eq:local-totals}, these facts identify all three constant-map inclusions into $\Map(E_O,Z)$, $\Map(E_I,Z)$ and $\Map(R,Z)$ as equivalences. The pushout mapping property gives
+\begin{align*}
+\Map(E_*,Z)
+&\simeq\Map(E_O,Z)\hpb_{\Map(R,Z)}\Map(E_I,Z)\\
+&\simeq Z\hpb_ZZ\simeq Z.
+\end{align*}
+These equivalences identify the constant-map inclusion, so $L_{30}E_*\simeq1$.
+
+Put $Q_O=L_3P_O$, $Q_I=L_{10}P_I$ and $T=L_{30}P_*$, pointed by the units. Let $u_O:Q_O\to T$ and $u_I:Q_I\to T$ be induced by the pushout inclusions, with their pointing paths. Corollary~\ref{cor:local-machine} gives
+\[
+\phi_O:\Omega Q_O\simeq L_3F,\qquad
+\phi_I:\Omega Q_I\simeq L_{10}F,\qquad
+\phi_*:\Omega T\simeq L_{30}F.
+\]
+They fit into specified commuting squares
+\begin{equation}\label{eq:loop-comparisons}
+\begin{tikzcd}[column sep=large,row sep=large]
+\Omega Q_O \arrow[r,"\Omega u_O"] \arrow[d,"\phi_O"'] & \Omega T \arrow[d,"\phi_*"] \\
+L_3F \arrow[r] & L_{30}F
+\end{tikzcd}
+\qquad
+\begin{tikzcd}[column sep=large,row sep=large]
+\Omega Q_I \arrow[r,"\Omega u_I"] \arrow[d,"\phi_I"'] & \Omega T \arrow[d,"\phi_*"] \\
+L_{10}F \arrow[r] & L_{30}F.
+\end{tikzcd}
+\end{equation}
+To obtain each homotopy, precompose with $\phi_c^{-1}$ and restrict along $F\to L_{N_c}F$. The common-fibre identifications and the unit rule in Theorem~\ref{thm:local-fibre} give the equality there. Contractions centred at the chosen points are compatible because the type of such contractions is contractible. Restriction into $L_{30}F$ is an equivalence of function types, so it extends this equality with its prescribed restriction. The pointed version retains the basepoint paths. In particular, the $I$-side point is compared with the selected star point by the pushout gluing path.
+
+\subsection{Assembly}\label{sec:assembly}
+\begin{proof}[Proof of the delooping assertion of Theorem~\ref{thm:main}]
+The type in \eqref{eq:B} is explicitly
+\[
+B=\sum_{x:Q_O}\sum_{y:Q_I}(u_Ox=u_Iy).
+\]
+Write $q_O^0,q_I^0,t_0$ for the chosen points and $\alpha_c:u_c(q_c^0)=t_0$ for the pointing paths. Its basepoint is
+\[
+b_0=(q_O^0,q_I^0,\alpha_O\cdot\alpha_I^{-1}).
+\]
+The types $Q_O,Q_I,T$ are simply connected. To compare two points of $B$ merely, use connectedness of $Q_O,Q_I$ to compare their first two coordinates. After transport, the last coordinates are paths in $T$ with fixed endpoints; their identity type is merely inhabited by simple connectedness of $T$. Elimination into the proposition expressing mere equality gives $c_B:\Conn(B)$.
+
+Looping the pointed homotopy pullback and using \eqref{eq:loop-comparisons} gives the chain recorded in \eqref{eq:loop-chain}:
+\begin{align*}
+\Omega(B,b_0)
+&\simeq\Omega Q_O\hpb_{\Omega T}\Omega Q_I\\
+&\simeq L_3F\hpb_{L_{30}F}L_{10}F
+ \simeq F\simeq S^3.
+\end{align*}
+The fracture equivalence applies to the simply connected type $F\simeq S^3$. Let $e:\Omega(B,b_0)\simeq S^3$ be this composite and put $r=e^{-1}(*)$. Left translation $\ell_r(p)=r\cdot p$ is an equivalence, with inverse $\ell_{r^{-1}}$. The composite $e\ell_r$ has the pointing
+\[
+e(r\cdot\mathsf{refl})=e(r)=*,
+\]
+by the right unit law and the inverse law of $e$. It defines $\varepsilon:\Omega(B,b_0)\eqp S^3$, and hence the required untruncated term
+\[
+\mathfrak d=((B,b_0),c_B,\varepsilon):
+\sum_{B:\Pointed}\bigl(\Conn(B)\times(\Omega B\eqp S^3)\bigr).
+\]
+Homology coordinates and Moore representatives enter only into proofs of contractibility, which are propositions. Their propositional truncations can therefore be eliminated there; the pullback $B$ and the displayed term are then constructed from the fixed geometric data.
+\end{proof}

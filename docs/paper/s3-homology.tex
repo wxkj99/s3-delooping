@@ -1,0 +1,324 @@
+\section{Moore recognition and homology of the total spaces}\label{sec:homology}
+
+The profiles needed below are $\HH_3(E_O)\cong\Z/3$ and $\HH_2(E_I)\cong\Z/2$, $\HH_3(E_I)\cong\Z/10$, with all other reduced homology groups zero. Moore recognition and localization will turn these profiles into contractions of $L_3E_O$ and $L_{10}E_I$; the degree-two class of $E_I$ requires a first Moore attachment to produce a $2$-connected cofibre. The dimension bound in Moore recognition converts finite connectivity estimates into inverse maps by bounded cellular lifting.
+
+\subsection{Finite Moore recognition}
+
+\begin{definition}
+A \emph{finite CW presentation of dimension at most $d$} consists of finite sets $I_q$ for $0\leq q\leq d$, skeleta $X_{-1}=\varnothing,X_0,\ldots,X_d$, attaching maps $\alpha_q:I_q\times S^{q-1}\to X_{q-1}$, and specified skeletal pushout squares
+\[
+\begin{tikzcd}[column sep=large,row sep=large]
+I_q\times S^{q-1} \arrow[r,"\alpha_q"] \arrow[d,"\operatorname{pr}_1"'] \pomark & X_{q-1} \arrow[d] \\
+I_q \arrow[r] & X_q.
+\end{tikzcd}
+\]
+Here $S^{-1}=\varnothing$, so $X_0\simeq I_0$; the lower-left vertices are the centres of the attached cones. Write $\mathrm{CW}_{\leq d}$ for the type of these presentations and $|C|=X_d$ for the realization of $C$. The assertion that $X$ \emph{merely admits a finite CW model of dimension at most $d$} is
+\[
+\mere{\sum_{C:\mathrm{CW}_{\leq d}}(|C|\simeq X)}.
+\]
+A finite HIT presentation specifies finitely many constructors; a finite CW presentation additionally organizes the constructors into these sphere-attaching skeleta. The finite CW bounds used below include this skeletal data.
+\end{definition}
+
+With the Moore-space convention of the introduction, write $\delta_{m,n}:=\Sigma^{n-1}d_m:S^n\to S^n$ for $m,n\geq1$. Naturality of the cellular suspension isomorphisms and $\HH_1(d_m)=\times m$ give $\HH_n(\delta_{m,n})=\times m$ in the standard sphere coordinates.
+
+A map is $k$-connected when all its fibres are $k$-connected. For a pointed $(n-1)$-connected CW type $X$ and $n\geq1$, the cellular Hurewicz theorem gives a natural isomorphism
+\[
+\pi_n(X,x)^{\mathrm{ab}}\cong\HH_n(X).
+\]
+Abelianization is redundant for $n\geq2$. The cellular Hurewicz map, its naturality, and this isomorphism are supplied directly by the pinned Cubical library (Appendix~\ref{app:formal}). For the prespectrum-homology formulation in HoTT, see \cite[Theorem~3.12]{hurewiczhott}.
+
+\begin{theorem}[Four-dimensional Moore recognition]\label{thm:moore-recognition}
+Let $m>0$ and let $X$ be a $2$-connected type merely admitting a finite CW model of dimension at most $4$. If $\HH_3(X)\cong\Z/m$ and $\HH_4(X)=0$, then
+\[
+\mere{X\simeq\Moore m3}.
+\]
+\end{theorem}
+\begin{proof}
+Write $M=\Moore m3$ and fix the given group isomorphism $\theta_X:\HH_3(X)\cong\Z/m$. Choose a finite CW model of $X$ inside the propositional truncation of the conclusion; all subsequent choices remain inside that truncation.
+
+\emph{Step 1: the calibrated representative.}
+Choose a point $x:X$, merely available by connectedness, and put $h=\theta_X^{-1}(\overline1)$. Hurewicz gives a group isomorphism
+\[
+\mathfrak h_X:\pi_3(X,x)\xrightarrow{\cong}\HH_3(X).
+\]
+Since $\pi_3(X,x)$ is the set truncation of pointed sphere maps, there merely exists $s:S^3\to_*(X,x)$ with $\mathfrak h_X([s])=h$. Let $u_3\in\HH_3(S^3)$ be the standard generator. Hurewicz naturality and the suspension degree calculation give
+\[
+\mathfrak h_X([s\circ\delta_{m,3}])
+=\HH_3(s\circ\delta_{m,3})(u_3)
+=m\HH_3(s)(u_3)=mh=0.
+\]
+Injectivity of $\mathfrak h_X$ gives $[s\circ\delta_{m,3}]=0$. Effectiveness of set truncation turns this equality into a merely existing pointed nullhomotopy. Forgetting its pointing gives $v:s\circ\delta_{m,3}\sim\operatorname{const}_x$. Cofibre recursion now defines $f:M\to X$: it sends the cone point to $x$, restricts to $s$ on the bottom inclusion $i:S^3\to M$, and sends the cofibre path at $z$ to $v_z^{-1}$. In particular, it retains a specified homotopy $f i\sim s$.
+
+For completeness, the homology coordinate on $M$ is calibrated on this bottom inclusion. The degree calculation and the cofibre sequence identify
+\[
+\HH_3(M)\cong\operatorname{coker}(\Z\xrightarrow{\times m}\Z).
+\]
+The quotient map induced by $a\mapsto\HH_3(i)(a u_3)$ is an isomorphism $\Z/m\to\HH_3(M)$. Its inverse $\theta_M$ satisfies $\theta_M(\HH_3(i)(u_3))=\overline1$. Naturality and the restriction homotopy give
+\[
+\HH_3(f)(\HH_3(i)(u_3))=\HH_3(s)(u_3)=h.
+\]
+Thus $\theta_X\HH_3(f)\theta_M^{-1}$ fixes $\overline1$. A homomorphism out of $\Z/m$ is determined by this element, so this composite is the identity and $\HH_3(f)$ is an isomorphism. This argument includes $m=1$.
+
+\emph{Step 2: connectivity of the actual cofibre.}
+Both $M$ and $X$ are $2$-connected. Hurewicz naturality identifies $\pi_3(f)$ with $\HH_3(f)$ at every point of $M$. The induced map $\tau_3f:\tau_3M\to\tau_3X$ is therefore an equivalence by Whitehead for truncated types \cite[\S8.8]{hott}: the component types are contractible, $\pi_1$ and $\pi_2$ vanish, $\pi_3(f)$ is an isomorphism, and all higher groups of these $3$-types vanish. The truncation units are $3$-connected. Applying connectivity cancellation to
+\[
+\eta_3^X f=(\tau_3 f)\eta_3^M
+\]
+yields the $2$-connectedness of $f$ used below. Pushout connectivity then makes $K=\cofib(f)$ $3$-connected.
+
+The finite dimension bound gives $\HH_5(X)=0$. The cellular differential of $M$ in degrees $4$ and $3$ is $\times m:\Z\to\Z$, so $m>0$ gives $\HH_4(M)=0$. Choose the cellular approximations for the actual map $f$ under truncation. Its cofibre homology sequence contains
+\[
+\begin{gathered}
+\HH_4(X)\longrightarrow\HH_4(K)\longrightarrow\HH_3(M)
+ \xrightarrow{\HH_3(f)}\HH_3(X),\\
+\HH_5(X)\longrightarrow\HH_5(K)\longrightarrow\HH_4(M).
+\end{gathered}
+\]
+Exactness and $\HH_4(X)=0$ give $\HH_4(K)=\HH_5(K)=0$. Hurewicz for the $3$-connected CW type $K$ identifies $\pi_4(K)$ with $\HH_4(K)$; its vanishing makes $\tau_4K$ contractible by truncated Whitehead, so $K$ is $4$-connected. Hurewicz in degree $5$ similarly gives $\pi_5(K)=0$ and makes $K$ $5$-connected. These are two finite connectivity improvements.
+
+\emph{Step 3: finite cellular lifting.}
+Let $k_0:K$ be the cone point and $\iota:X\to K$ the other cofibre inclusion. In the cofibre square the maps $M\to1$ and $f:M\to X$ are both $2$-connected. Blakers--Massey \cite{bm} gives a $4$-connected comparison
+\[
+M\longrightarrow P:=\sum_{x:X}(k_0=\iota x),
+\qquad a\longmapsto(fa,\mathsf{glue}(a)).
+\]
+Since $K$ is $5$-connected, every path type $k_0=\iota x$ is $4$-connected. Thus $P\to X$ is $4$-connected, and composition shows that every fibre of $f$ is $4$-connected.
+
+We use the finite cellular lifting lemma in its precise form: a family of $(d-1)$-connected types over a type merely admitting a finite CW model of dimension at most $d$ merely has a section. To prove it, induct over the finite skeleta. Over a $q$-cell the boundary section, after transport to the fibre at the cell centre, is a map from $S^{q-1}$ to that fibre. Connectedness gives a merely existing cone on this map for $q\leq d$; for $q=0$ it gives a point. Finite choice combines the fillers for the finitely many cells at each stage, and dependent pushout elimination extends the section. All stages and the finite presentation are eliminated into propositional truncation.
+
+Apply this lemma with $d=4$ to $x\mapsto\fib(f,x)$ over $X$, using its $3$-connectedness. It gives, merely, a section $\sigma(x)=(g(x),\epsilon_x)$, where $\epsilon_x:f(g(x))=x$. For $a:M$, the type
+\[
+\sigma(fa)=(a,\mathsf{refl})\quad\text{in }\fib(f,fa)
+\]
+is $3$-connected, since $\fib(f,fa)$ is $4$-connected. The same lemma over the finite $4$-dimensional type $M$ gives, merely, a dependent family of these paths. Projection to $M$ gives $g f\sim\id_M$, while $\epsilon$ gives $f g\sim\id_X$. Equivalently, the second lifting uses relative cells of dimension at most $5$ in a cellular cylinder on $M$. Hence $f$ is an equivalence. For this fixed $f$, both truncated lifting choices eliminate into the proposition $\isEquiv(f)$; inverting $f$ and retaining the original truncation gives $\mere{X\simeq M}$.
+\end{proof}
+
+\begin{remark}
+The cofibre $K$ merely has a finite CW model of dimension at most $5$: coning the $4$-cells of $M$ can introduce $5$-cells. The proof uses $\HH_4(K)=\HH_5(K)=0$ and the dimension bounds on $M$ and $X$.
+\end{remark}
+
+For the localizations $L_m$ fixed in the introduction, Moore spaces have the following contractions.
+
+\begin{corollary}[Local Moore contractions]\label{cor:moore-null}
+For $n\geq1$ and positive $d\mid m$, the type $\Moore dn$ is $L_m$-connected. In particular,
+\begin{equation}\label{eq:needed-moore-null}
+L_3\Moore33\simeq1,\qquad
+L_{10}\Moore22\simeq1,\qquad
+L_{10}\Moore{10}3\simeq1.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Write $m=dk$ and let $P_j$ denote the $j$th power map on a loop type. The identities
+\[
+P_m=P_dP_k=P_kP_d
+\]
+show that $P_d$ and $P_k$ commute; if $P_m$ is invertible, so are both factors, with inverses $P_kP_m^{-1}$ and $P_dP_m^{-1}$ respectively. The loop-power criterion \cite[Lemma~4.2]{cors} therefore makes every $m$-local type $d$-local. Apply the same argument to iterated loop types, using closure of local types under identity types. For every $m$-local $Z$ and $z:Z$, precomposition by $\delta_{d,n}=\Sigma^{n-1}d_d$ is an equivalence on $\Map_*(S^n,(Z,z))$. The pointed cofibre mapping property identifies $\Map_*(\Moore dn,(Z,z))$ with its fibre over the constant map, hence makes it contractible. This is the implication (1)$\Rightarrow$(2) of \cite[Theorem~3.6]{cors} applied to $\delta_{d,n}$. Evaluation $\Map(\Moore dn,Z)\to Z$ is consequently an equivalence for every such $Z$. The local mapping criterion \cite[Lemma~2.9]{cors} gives $L_m\Moore dn\simeq1$.
+\end{proof}
+
+\begin{lemma}[Two-stage local connectedness]\label{lem:two-stage-null}
+For $a:A\to E$, if $A$ and $\cofib(a)$ are $L_m$-connected, then $E$ is $L_m$-connected.
+\end{lemma}
+\begin{proof}
+For an $m$-local type $Z$, the cofibre mapping property gives
+\[
+\Map(\cofib(a),Z)\simeq
+\Map(E,Z)\hpb_{\Map(A,Z)}Z.
+\]
+The constant-map inclusion $Z\to\Map(A,Z)$ is an equivalence because $A$ is $L_m$-connected. Thus restriction $\Map(\cofib(a),Z)\to\Map(E,Z)$ is an equivalence. The composite with $Z\to\Map(\cofib(a),Z)$ is also an equivalence and is the constant-map inclusion for $E$. Apply \cite[Lemma~2.9]{cors}.
+\end{proof}
+
+\subsection{Cellular homology and naturality}
+
+For a finite CW presentation, the ordinary cellular chains $C_q(X)=\Z[I_q]$ for $q\geq0$ are free on the $q$-cells, with differential given by attaching degrees and $C_{-1}(X)=0$. The augmentation $\epsilon_X:C_0(X)\to\Z$ is specified separately. We use independence of the presentation, functoriality for arbitrary maps between the realized types, homotopy invariance, vanishing above the CW dimension, and the integral Hurewicz isomorphism stated above. Below, $H_q=\HH_q$ for $q>0$.
+
+Sweeping the cells of the overlap along the gluing interval gives the ordinary double mapping cylinder complex for a cellular span $B\xleftarrow f A\xrightarrow g C$:
+\begin{equation}\label{eq:DMC}
+\begin{aligned}
+\mathcal D_q&=C_q(B)\oplus C_q(C)\oplus C_{q-1}(A) &&(q\geq0),\\
+\partial(b,c,a)&=(\partial b+f_*a,\partial c-g_*a,-\partial a) &&(q\geq1).
+\end{aligned}
+\end{equation}
+Thus the low-degree differential and the single augmentation are
+\[
+\begin{aligned}
+\mathcal D_0&=C_0(B)\oplus C_0(C),\\
+\partial_1(b,c,a)&=(\partial b+f_*a,\partial c-g_*a),\\
+\epsilon_{\mathcal D}(b,c)&=\epsilon_B(b)+\epsilon_C(c).
+\end{aligned}
+\]
+The vertex inclusions and the projection $(b,c,a)\mapsto a$ give the reduced Mayer--Vietoris sequence
+\begin{equation}\label{eq:MV}
+\cdots\to\HH_q(A)\xrightarrow{(f_*,-g_*)}
+\HH_q(B)\oplus\HH_q(C)\to\HH_q(B\hpo_A C)
+\xrightarrow{\delta}\HH_{q-1}(A)\to\cdots.
+\end{equation}
+
+For maps of spans, let $u:A\to A'$, $v:B\to B'$, $w:C\to C'$ have homotopies $vf\sim f'u$ and $wg\sim g'u$. After cellular approximation, retain their chain homotopies $H,J$, with signs fixed by
+\[
+\partial H+H\partial=v_*f_*-f'_*u_*;
+\qquad
+\partial J+J\partial=w_*g_*-g'_*u_*.
+\]
+The induced chain map is
+\[
+(b,c,a)\longmapsto
+\bigl(v_*b+Ha,\ w_*c-Ja,\ u_*a\bigr).
+\]
+Projection to the third coordinate explains the boundary-naturality formula. For finite CW spans, the formalized comparison with actual augmented cellular chains supplies $\delta_n:\HH_{n+1}(B\hpo_A C)\to\HH_n(A)$ and exactness at $\HH_{n+1}(B\hpo_A C)$, $\HH_n(A)$, and $\HH_n(B)\oplus\HH_n(C)$ for $0\leq n<5$. It supplies naturality for $\delta_2:H_3\to H_2$ between spans and for $\delta_1:H_2\to H_1$ under self-maps of a span, retaining the specified comparison homotopies. The presentations, cellular approximations, and marked homotopies are chosen jointly inside a single propositional truncation. These are the geometric interfaces used below; see Appendix~\ref{app:formal}.
+
+\subsection{The component groups and covering degree}
+
+Write $C\simeq S^1$ for the circle used in the Seifert construction. The boundary maps into $P_0\times C$ are $\partial_i\times\id_C$, where $\partial_1,\partial_2,\partial_3$ represent $a,b,(ab)^{-1}$. In the coordinates $a\times h,b\times h$, their degree-two columns are $(1,0),(0,1),(-1,-1)$. Hence the left map on $H_2$ is
+\begin{equation}\label{eq:D}
+D:\Z^3\to\Z^2,\qquad D(x,y,z)=(x-z,y-z),
+\end{equation}
+with section $(u,v)\mapsto(u,v,0)$ and kernel $\Z(1,1,1)$. The following lemma identifies the coefficients of these actual maps and of the overlap coverings.
+
+\begin{lemma}[Torus multiplier]\label{lem:torus-multiplier}
+For $\ell\in\Z$, the map $m_\ell(u,t)=(\mu_\ell(u),t)$ of $T^2=C\times C$ acts by multiplication by $\ell$ on $H_2$.
+\end{lemma}
+\begin{proof}
+Use the cylinder presentation
+\[
+C\times\Sigma 2\simeq
+C\hpo_{C\amalg C}C,
+\]
+whose two structure maps are folds and whose suspension meridians are the two pushout paths. Since $\Sigma2\simeq S^1$ and both vertices have zero $H_2$, its boundary $\delta:H_2(T^2)\to H_1(C\amalg C)$ is injective. The overlap map $\mu_\ell\amalg\mu_\ell$ acts by $\ell$ on $H_1$. Naturality for this one sequence gives $\delta H_2(m_\ell)(z)=\ell\delta(z)=\delta(\ell z)$, and injectivity gives the result.
+\end{proof}
+
+Coordinate projections select the corresponding cellular generators. Reflection in one circle reverses the orientation of the torus square cell and therefore has degree $-1$ on $H_2(T^2)$.
+
+For positive $p,q,r$, use the overlap basis $(u_1,u_2,u_3,h_1,h_2,h_3)$ of $H_1(\coprod T^2)$, where $u_i$ is the boundary-circle loop and $h_i$ the fibre loop. In the target basis $(a,b,h,x,y,z)$, the boundary words $a,b,(ab)^{-1}$ and the filling rows $[1,p],[1,q],[1-r,r]$ give the signed Mayer--Vietoris map
+\[
+A_{\mathrm{raw}}=
+\begin{pmatrix}
+1&0&-1&0&0&0\\
+0&1&-1&0&0&0\\
+0&0&0&1&1&1\\
+-1&0&0&-p&0&0\\
+0&-1&0&0&-q&0\\
+0&0&r-1&0&0&-r
+\end{pmatrix}.
+\]
+Make the following integral changes of basis in its source and target, respectively:
+\[
+\begin{gathered}
+(u_1,u_2,t_p,t_q,t_r,t_0)
+=(u_1,u_2,-h_1,-h_2,-h_3,u_1+u_2+u_3+h_3),\\
+(a-x,b-y,x,y,z,\bar h),\qquad \bar h=-h.
+\end{gathered}
+\]
+Both are unimodular. The first two columns now form an identity block, and the remaining columns have zero coordinates in its two rows, giving $I_2\oplus A(p,q,r)$, with labelled rows and columns
+\[
+A(p,q,r)=
+\begin{array}{c|rrrr}
+ &t_p&t_q&t_r&t_0\\\hline
+x&p&0&0&-1\\
+y&0&q&0&-1\\
+z&0&0&r&-1\\
+\bar h&1&1&1&-1
+\end{array}.
+\]
+Consequently,
+\[
+\det A=pq+pr+qr-pqr
+=pqr\left(\frac1p+\frac1q+\frac1r-1\right).
+\]
+The second equality uses $p,q,r>0$. Surjectivity of $D$ and the adjacent Mayer--Vietoris terms now give $H_3\cong\ker D\cong\Z$ and $H_2\cong\ker A$. The degree-zero map is injective: the overlap and the filling circles both have reduced $H_0\cong\Z^2$, and the filling map preserves their component indices. Thus $H_1\cong\operatorname{coker}A$. The Smith diagonals and homology groups are
+\begin{equation}\label{eq:component-homology}
+\begin{array}{c|c|cccc}
+X&\text{Smith diagonal of }A&H_1(X)&H_2(X)&H_3(X)&H_4(X)\\\hline
+M(2,3,4)&(1,1,1,2)&\Z/2&0&\Z&0\\
+M(2,3,5)&(1,1,1,1)&0&0&\Z&0\\
+M(2,2,4)&(1,1,2,2)&(\Z/2)^2&0&\Z&0\\
+M(2,2,3)&(1,1,1,4)&\Z/4&0&\Z&0
+\end{array}.
+\end{equation}
+Each determinant is nonzero, so each kernel vanishes. These types have finite CW models of dimension $3$, and hence have zero homology in every higher degree.
+
+\begin{lemma}[Boundary incidence]\label{lem:boundary-incidence}
+Consider the initial lifted Seifert diagram, before the primitive cancellations. Let $Q_c$ be its sheet set and $\mathcal B_c$ the disjoint union of its three boundary-orbit sets. Orient the lifted graph edges as $e_a(s):s\to a(s)$ and $e_b(s):s\to b(s)$ for $s:Q_c$. Orient boundary loops by $a$, $b$, and $(ab)^{-1}$, with the last traversing $b^{-1}$ then $a^{-1}$, and orient each torus cell by this boundary direction followed by the fibre direction $h$. Write $A(s),B(s),C(s)$ for the three boundary orbits through $s$.
+
+Choose a spanning tree in the lifted graph and let $J_c$ be its non-tree edges. The left $H_2$ map is the matrix $\widehat D_c:\Z[\mathcal B_c]\to\Z[J_c]$ obtained by restricting the following rows to $J_c$:
+\[
+\begin{aligned}
+(R_cx)_{e_a(s)}&=x_{A(s)}-x_{C(s)},\\
+(R_cx)_{e_b(s)}&=x_{B(s)}-x_{C(b(s))}.
+\end{aligned}
+\]
+Thus each row of $\widehat D_c$ has a $+1$ at the indicated $A$- or $B$-orbit and a $-1$ at the indicated $C$-orbit, with all other entries zero. Its sizes and kernels are
+\[
+\begin{array}{c|ccc}
+c&|Q_c|&|J_c|&|\mathcal B_c|\\\hline
+O&3&4&5\\
+I&10&11&12
+\end{array},
+\qquad
+\ker\widehat D_c=\Z\mathbf1.
+\]
+\end{lemma}
+\begin{proof}
+Every positive $a$-edge occurs once in its $A$-boundary and once, negatively, in the $C$-boundary through its initial sheet. The analogous negative occurrence of $e_b(s)$ belongs to the $C$-boundary through $b(s)$. These occurrences give the displayed rows. Tree contraction reads off the non-tree coefficients, and the torus multiplier calculation identifies them with the actual $H_2$ coefficients. There are $2N_c$ edges and $N_c-1$ tree edges, so $|J_c|=N_c+1$. The orbit lists in \eqref{eq:orbit-lengths} give $|\mathcal B_O|=5$ and $|\mathcal B_I|=12$.
+
+For any $x$, the chain $R_cx$ is a sum of closed boundary words and hence a graph cycle. If $\widehat D_cx=0$, this cycle is supported on the tree; successive removal of leaves gives $R_cx=0$. Put $\alpha(s)=x_{A(s)}$, $\beta(s)=x_{B(s)}$, and $\gamma(s)=x_{C(s)}$. The two zero-row equations give $\alpha(s)=\gamma(s)$ and $\beta(s)=\gamma(b(s))$. Since $\beta$ is constant on $b$-orbits, the latter equation also gives $\beta(s)=\gamma(s)$. Constancy of $\alpha$ on $a$-orbits and of $\beta$ on $b$-orbits makes $\gamma$ constant along every graph edge. The lifted graph is connected, so all boundary coefficients are equal. Conversely the displayed rows kill every constant vector. Evaluation at the $A$-orbit of a fixed root sheet is inverse to $t\mapsto t\mathbf1$, proving the asserted integral kernel identification.
+\end{proof}
+
+\begin{theorem}[Covering degree]\label{thm:cover-degree}
+There are jointly chosen coordinates $H_3(A_c)\cong\Z$ and $H_3(C_c)\cong\Z$ in which the specified coverings $p_O,p_I$ act by $+3,+10$, respectively.
+\end{theorem}
+\begin{proof}
+In the initial covering pushout, let $O_s,O_t$ be the source and target overlaps, and let $V_s=\Z[\mathcal B_c]$, $W_s=\Z[J_c]$. The left $H_2$ maps have matrices $\widehat D=\widehat D_c:V_s\to W_s$ and $D:\Z^3\to\Z^2$. Lemma~\ref{lem:boundary-incidence} identifies the actual source map, with its $4\times5$ or $11\times12$ incidence matrix, and gives
+\[
+\ker\widehat D=\Z\mathbf1,\qquad \ker D=\Z(1,1,1).
+\]
+The overlap projection $\pi:O_s\to O_t$ is represented by $U_2:V_s\to\Z^3$, with coefficients the boundary-orbit lengths, by Lemma~\ref{lem:torus-multiplier}. For each boundary kind these lengths sum to the number $N_c$ of sheets; thus $U_2(\mathbf1)=N_c(1,1,1)$.
+
+The vertices have zero $H_3$, and the right vertices have zero $H_2$, so the boundary maps identify source and target $H_3$ with the two kernels above. Naturality gives
+\[
+\delta_t H_3(p_c)=H_2(\pi)\delta_s.
+\]
+Choosing the $H_3$ generators by $\delta_s^{-1}(\mathbf1)$ and $\delta_t^{-1}(1,1,1)$ proves the asserted positive degrees. The specified equivalences from the reduced covering diagrams transport these coordinates and their equation to $A_c,C_c$.
+\end{proof}
+
+\subsection{The outer pushouts and local contraction}
+
+For $E_c=R\hpo_{A_c}C_c$, the groups $H_2(R),H_2(A_c),H_2(C_c)$ vanish. Theorem~\ref{thm:cover-degree} gives the exact segment
+\[
+0\longrightarrow H_4(E_c)\longrightarrow\Z
+ \xrightarrow{\times N_c}\Z\longrightarrow H_3(E_c)\longrightarrow0,
+\]
+where the sign in \eqref{eq:MV} is absorbed in the target coordinate. Consequently $H_4(E_c)=0$ and $H_3(E_c)\cong\Z/N_c$. The next segment identifies
+\[
+H_2(E_c)\cong\ker\bigl(H_1(A_c)\xrightarrow{(q_{c*},-p_{c*})}
+H_1(R)\oplus H_1(C_c)\bigr).
+\]
+By Proposition~\ref{prop:seifert-simple}, $H_1(E_c)=0$, so this map is surjective. For $c=O$ it is a surjection $(\Z/2)^2\to(\Z/2)^2$, hence an isomorphism. For $c=I$ it is a surjection $\Z/4\to\Z/2$, with kernel $\Z/2$.
+
+\begin{proposition}[Homology profiles]\label{prop:profiles}
+The types $E_O,E_I$ are simply connected and merely admit finite CW models of dimension at most $4$. Their nonzero reduced homology groups are
+\[
+\HH_3(E_O)\cong\Z/3;\qquad
+\HH_2(E_I)\cong\Z/2,\quad \HH_3(E_I)\cong\Z/10.
+\]
+\end{proposition}
+\begin{proof}
+The homology calculation is above. The double mapping cylinder for each outer span has dimension at most $4$, since $R$ has dimension $2$ and $A_c,C_c$ have dimension $3$.
+\end{proof}
+
+For $E_O$, Hurewicz and $H_2(E_O)=0$ give $2$-connectedness. Theorem~\ref{thm:moore-recognition} yields $\mere{E_O\simeq\Moore33}$. Eliminating this truncation into the proposition $\isContr(L_3E_O)$ and using \eqref{eq:needed-moore-null} contracts $L_3E_O$.
+
+The type $E_I$ has $H_2(E_I)\cong\Z/2$; we cone off $\Moore22$, leaving a $2$-connected cofibre to which Moore recognition applies. Choosing a point under truncation, Hurewicz in degree two supplies, merely, a representative $s:S^2\to_*E_I$ of the generator. Since $H_2(\delta_{2,2})=\times2$, naturality and injectivity of Hurewicz give, merely, a pointed nullhomotopy of $s\delta_{2,2}$. Cofibre recursion gives $a:\Moore22\to E_I$ inducing an isomorphism on $H_2$, calibrated on the bottom inclusion as in Step~1 above. Its cofibre $K_a$ is simply connected and has a finite CW model of dimension at most $4$, since $\Moore22$ has dimension $3$. The cofibre sequence gives
+\[
+H_2(K_a)=0,\qquad H_3(K_a)\cong\Z/10,\qquad H_4(K_a)=0.
+\]
+Hurewicz makes $K_a$ $2$-connected, and Theorem~\ref{thm:moore-recognition} gives the data in the form
+\begin{equation}\label{eq:EI-profile}
+\mere{\sum_{a:\Moore22\to E_I}
+             \bigl(\cofib(a)\simeq\Moore{10}3\bigr)}.
+\end{equation}
+For each such $a$, both its domain and its cofibre are $L_{10}$-connected by \eqref{eq:needed-moore-null}. Lemma~\ref{lem:two-stage-null}, followed by elimination into the proposition $\isContr(L_{10}E_I)$, gives the second contraction.
+
+\begin{corollary}\label{cor:local-totals}
+The total spaces satisfy $L_3E_O\simeq1$ and $L_{10}E_I\simeq1$.
+\end{corollary}
+These contractions are used in \S\ref{sec:construction} to identify the localized fibres with loop types.

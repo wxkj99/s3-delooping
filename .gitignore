@@ -8,8 +8,13 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 
-# Local documentation and manuscripts are not published in this repository
-/docs/
+# Publish only the current paper; other local documentation stays excluded
+/docs/*
+!/docs/paper/
+!/docs/s3-delooping-paper.pdf
+/docs/paper/*
+!/docs/paper/*.tex
+!/docs/paper/build.sh
 
 # Paper and other generated build files
 .build/

@@ -1,0 +1,149 @@
+\section{The maximal torus and comparison problems}\label{sec:outlook}
+
+The common corner of the construction yields more than a delooping: we will identify $R=\RP^2$ as the fibre of a map $\baseN\to B$. Its orientation cover then gives a map $K(\Z,2)\to B$ with fibre $S^2$. This maximal torus identifies the classical homotopy type of $B$; internal comparisons with standard structures are discussed below.
+
+\subsection{The maximal torus and classical recognition}
+
+Put $u=\eta_2:R\to\baseN$, $n_0=u(r_0)$ and $E=L_3E_O\hpb_{L_{30}E_*}L_{10}E_I$. The three localized total spaces are contractible, so $E$ is contractible. The common corner induces a square
+\begin{equation}\label{diag:HP}
+\begin{tikzcd}[column sep=large,row sep=large]
+R \arrow[r,"\alpha"] \arrow[d,"u"'] \pbmark & E \arrow[d,"p"] \\
+\baseN \arrow[r,"j"'] & B.
+\end{tikzcd}
+\end{equation}
+Our goal is its cartesianness. Contracting $E$ will then identify $R$ with $\fib(j,b_0)$ over $\baseN$, allowing us to pull back the orientation cover. The following lemma isolates the arithmetic step, including the specified overlap path. We use localization HIT recursors with judgmental computation on units; computation paths for homotopies between recursors need only be propositional.
+
+\begin{lemma}[Recognition of a specified fracture cone]\label{lem:unit-fracture-cone}
+Let $F$ be $2$-connected and $m,n$ coprime positive integers. Let $X_i$ be $i$-local for $i=m,n,mn$, with maps $a:X_m\to X_{mn}\leftarrow X_n:b$. Suppose
+$c=(c_m,c_n,\gamma):F\to X_m\hpb_{X_{mn}}X_n$ is a specified cone. If the recursor extensions $e_m:L_mF\to X_m$, $e_n:L_nF\to X_n$ and $e_{mn}:L_{mn}F\to X_{mn}$ of $c_m,c_n,a c_m$, respectively, are equivalences, then $c$ is an equivalence.
+\end{lemma}
+\begin{proof}
+Choose the overlap maps $j_i:L_iF\to L_{mn}F$ by recursion, so $j_i\eta^i\equiv\eta^{mn}$, and choose their unit homotopies to be reflexivity. Thus the fracture map is $\gamma_F(z)=(\eta^mz,\eta^nz,\mathsf{refl})$. Since $X_{mn}$ is both $m$-local and $n$-local, restriction along the units is an equivalence of mapping spaces and of their identity types. It therefore supplies homotopies with specified propositional unit restrictions
+\[
+\begin{aligned}
+A:a e_m\sim e_{mn}j_m,&\qquad A(\eta^mz)=\mathsf{refl},\\
+D:b e_n\sim e_{mn}j_n,&\qquad D(\eta^nz)=\gamma(z)^{-1}.
+\end{aligned}
+\]
+The objectwise equivalences $e_i$ induce the pullback equivalence
+\[
+\Phi(x,y,s)=\bigl(e_mx,e_ny,
+ A(x)\cdot\operatorname{ap}_{e_{mn}}(s)\cdot D(y)^{-1}\bigr).
+\]
+On $\gamma_F(z)$ its first two coordinates are $c_mz,c_nz$; the last is, by the specified restrictions and path laws,
+$\mathsf{refl}\cdot\mathsf{refl}\cdot(\gamma(z)^{-1})^{-1}=\gamma(z)$.
+Thus $\Phi\gamma_F\sim c$, including the actual overlap coordinate. Theorem~\ref{thm:fracture} makes $\gamma_F$, and hence $c$, an equivalence.
+\end{proof}
+
+\begin{theorem}\label{thm:torus}
+The square \eqref{diag:HP} is cartesian, and there is a pointed map $t:K(\Z,2)\to_*B$ with $\fib(t)\simeq S^2$. This is formalized in safe Cubical Agda (Appendix~\ref{app:formal}).
+\end{theorem}
+\begin{proof}
+\emph{The specified square.}
+Write $i_c:R\to E_c$, $j_c:\baseN\to P_c$ for the common-corner inclusions and $k_c^E:E_c\to E_*$, $k_c^P:P_c\to P_*$ for the star inclusions ($c=O,I$). The structure maps $t_c,t_*$ satisfy $t_ci_c=j_cu$ and $t_*k_c^E=k_c^Pt_c$ judgmentally. The actual pushout seams satisfy
+\[
+\begin{gathered}
+\sigma_R(r):k_O^Ei_O(r)=k_I^Ei_I(r),\qquad
+\sigma_N(n):k_O^Pj_O(n)=k_I^Pj_I(n),\\
+\operatorname{ap}_{t_*}(\sigma_R(r))=\sigma_N(u r).
+\end{gathered}
+\]
+Put $V_c=L_{N_c}E_c$, $V_*=L_{30}E_*$ and denote the localized maps by $v_c:V_c\to V_*$, $t_c^L:V_c\to Q_c$ and $t_*^L:V_*\to T$. All these maps, and $u_c:Q_c\to T$, compute on units by their original maps. Restriction into the local type $T$ extends reflexivity on units to side homotopies with specified computations
+\[
+H_c(x):t_*^L(v_cx)=u_c(t_c^Lx),\qquad
+\beta_c(x):H_c(\eta^{N_c}x)=\mathsf{refl}.
+\]
+The $\beta_c$ are propositional paths, not judgmental rules. Define
+\[
+\begin{aligned}
+p(x,y,s)&=\bigl(t_O^Lx,t_I^Ly,
+ H_O(x)^{-1}\cdot\operatorname{ap}_{t_*^L}(s)\cdot H_I(y)\bigr),\\
+\alpha(r)&=\bigl(\eta^3 i_O(r),\eta^{10}i_I(r),
+                    \operatorname{ap}_{\eta^{30}}(\sigma_R(r))\bigr),\\
+j(n)&=\bigl(\eta^3 j_O(n),\eta^{10}j_I(n),
+                    \operatorname{ap}_{\eta^{30}}(\sigma_N(n))\bigr).
+\end{aligned}
+\]
+The seam identity and $\beta_O,\beta_I$ give $H_r:p(\alpha(r))=j(u r)$, with constant first two coordinates. The specified pointings identify the seam of $j(n_0)$ with that of $b_0$, giving $j_0:j(n_0)=b_0$.
+
+\emph{The fibre comparison.}
+The square induces
+\[
+\kappa_n:\fib(u,n)\longrightarrow\fib(p,j(n)),\qquad
+\kappa_n(r,q)=\bigl(\alpha(r),H_r\cdot\operatorname{ap}_j(q)\bigr).
+\]
+At $n_0$, put $b_c^L=\eta^{N_c}j_c(n_0)$ and $\sigma=\operatorname{ap}_{\eta^{30}}(\sigma_N(n_0))$. The standard fibre formula for a map of pullbacks gives
+\[
+\begin{gathered}
+\Psi:\fib(p,j(n_0))\simeq X_3\hpb_{X_{30}}X_{10},\\
+X_3=\fib(t_O^L,b_O^L),\quad X_{10}=\fib(t_I^L,b_I^L),\quad
+X_{30}=\fib(t_*^L,u_Ob_O^L),\\
+a(x,q)=(v_Ox,H_O(x)\cdot\operatorname{ap}_{u_O}(q)),\qquad
+b(y,q)=(v_Iy,H_I(y)\cdot\operatorname{ap}_{u_I}(q)\cdot\sigma^{-1}).
+\end{gathered}
+\]
+Indeed, the overlap square in a path $p(x,y,s)=j(n_0)$ becomes a path $a(x,q_O)=b(y,q_I)$ over $s$ after whiskering by $H_O,H_I,\sigma^{-1}$; reversing the whiskerings gives the inverse. This description preserves the fibre-coordinate projections.
+
+Set $F=\fib(u,n_0)$ and write the actual composite as $\Psi\kappa_{n_0}=(c_3,c_{10},\gamma)$. Its coordinate maps on $(r,q):F$ are, using the constant coordinates of $H_r$ and the unit laws,
+\[
+\begin{aligned}
+c_{N_c}(r,q)&=\bigl(\eta^{N_c}i_c(r),
+       \operatorname{ap}_{\eta^{N_c}j_c}(q)\bigr),\\
+a c_3(r,q)&=\bigl(\eta^{30}k_O^Ei_O(r),
+       \operatorname{ap}_{\eta^{30}k_O^Pj_O}(q)\bigr).
+\end{aligned}
+\]
+These are pointwise paths, not judgmental rules; the second uses $\beta_O$. These are exactly the common-fibre equivalences supplied by cartesian descent followed by the fibre-unit maps of Theorem~\ref{thm:local-fibre}. Each $X_i$ is $i$-local, and the original bases $P_O,P_I,P_*$ are simply connected. Fibre preservation therefore makes all three recursor extensions equivalences: their unit restrictions are the displayed maps, so the localization mapping property identifies them with the canonical fibre equivalences. Since $F\simeq S^3$ is $2$-connected, Lemma~\ref{lem:unit-fracture-cone} applies to this actual cone, proving $\kappa_{n_0}$ an equivalence without changing its seam $\gamma$.
+
+The type $\baseN$ is connected and $\isEquiv(\kappa_n)$ is a proposition, so transport from $n_0$, eliminating mere paths, proves it for every $n$. Taking dependent sums gives the equivalence
+$R\simeq\sum_{n:\baseN}\fib(p,j(n))\simeq E\hpb_B\baseN$;
+on $r$ its value is $(\alpha(r),u r,H_r)$, up to the unit law. Thus the specified square is cartesian.
+
+\emph{The pointed torus.}
+Contract $E$ at $e_0=\alpha(r_0)$, writing $\ell_e:e=e_0$, and put $p_0=H_{r_0}\cdot j_0$. Rotating the pullback gives an equivalence \emph{over $\baseN$}
+\[
+\chi:R\simeq\fib(j,b_0),\qquad
+\chi(r)=\bigl(u r,H_r^{-1}\cdot\operatorname{ap}_p(\ell_{\alpha(r)})\cdot p_0\bigr).
+\]
+For the orientation cover $q:S^2\to R$, put $T_2=\tau_2S^2$ and $a_2=\tau_2q:T_2\to\baseN$. Its set fibres make its level-$2$ truncation square cartesian by Theorem~\ref{thm:trunc-square}. Pulling back $\chi$ along $a_2$ therefore gives
+\[
+S^2\simeq\sum_{z:T_2}\fib(u,a_2z)
+ \simeq\sum_{z:T_2}(j(a_2z)=b_0)=\fib(j a_2,b_0).
+\]
+Lemma~\ref{lem:hopf-reflection} supplies a pointed equivalence $e:T_2\eqp K(\Z,2)$. Define $t=j a_2e^{-1}$. Its pointing is the composite induced by $e^{-1}(0)=\eta_2(*)$, $a_2(\eta_2(*))=n_0$ and $j_0$. Change of domain along $e^{-1}$ now gives $\fib(t,b_0)\simeq S^2$.
+\end{proof}
+
+In the classical homotopy interpretation, $K(\Z,2)\simeq\CP^\infty=\B S^1$, and the map $t$ has finite homotopy fibre $S^2$. Thus it is a maximal torus for the delooping $B$.
+
+\begin{corollary}[Classical recognition]
+The classical homotopy type of $B$ is equivalent to $\HP^\infty$.
+\end{corollary}
+\begin{proof}
+By Dwyer--Miller--Wilkerson \cite[Thm.~1.1 and Rem.~1.2]{dmw}, all deloopings of $S^3$ belong to the genus classified by Rector. The equivalence $\Omega B\eqp S^3$ places $B$ in this class. Rector and McGibbon's maximal-torus criterion then identifies $B$ with $\B S^3\simeq\HP^\infty$ \cite{rector,mcgibbon}; see also \cite[Thm.~1.1(4)]{yaumaps}. Its finite-fibre hypothesis is supplied by Theorem~\ref{thm:torus}.
+\end{proof}
+This corollary uses classical recognition results. An internal equivalence between $B$ and an independently defined $\HP^\infty$ remains open.
+
+\subsection{Comparison with the Cayley--Dickson multiplication}
+
+The Cayley--Dickson multiplication $\mu_{\mathrm{CD}}$ on $S^3$ \cite{cayley} is an $H$-space structure, and the delooping gives a second multiplication $\mu_B$ on $S^3$, $\mu_B(x,y)=\varepsilon(\varepsilon^{-1}(x)\cdot\varepsilon^{-1}(y))$, with $\varepsilon$ the pointed equivalence of Theorem~\ref{thm:main}.
+
+\begin{problem}\label{prob:CD}
+Construct a pointed $H$-space equivalence
+\[
+h:(S^3,\mu_B)\simeq_H(S^3,\mu_{\mathrm{CD}}).
+\]
+Thus $h:S^3\eqp S^3$ should admit a homotopy
+\[
+h(\mu_B(x,y))=\mu_{\mathrm{CD}}(h(x),h(y))
+\qquad(x,y:S^3)
+\]
+compatible with the left and right unit homotopies.
+\end{problem}
+
+The composite $h\circ\varepsilon$ would then identify $B$ as a delooping of the Cayley--Dickson $H$-space. This formulation allows the sphere identification to vary. The quaternionic Hopf sequence $S^3\to S^7\to S^4$ constructed in \cite{cayley} is distinct from the complex Hopf sequence $S^1\to S^3\to S^2$ used in \S\ref{sec:truncation}. Relating these structures to the maximal torus of Theorem~\ref{thm:torus} requires further compatibility data.
+
+\subsection{Further perspectives}
+
+The construction illustrates how localization and arithmetic fracture, developed internally in homotopy type theory \cite{cors,scoccola}, can be used to construct a classical homotopy-theoretic object without first reproducing its customary geometric model. Here the higher coherence problem is approached through local constructions and arithmetic reconstruction, rather than by specifying an associator and then successively filling higher coherence diagrams.
+
+This suggests a broader direction for synthetic homotopy theory: extending its local and arithmetic methods, and using them to construct and study further classical objects internally. Natural longer-term goals include synthetic treatments of Bott periodicity and the further development of synthetic stable homotopy theory. I hope that this example will encourage further work along these lines.

@@ -1,0 +1,97 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{tikz,tikz-cd}
+\usetikzlibrary{arrows.meta,calc,positioning,decorations.markings,fit}
+\usepackage{booktabs,array,enumitem,longtable}
+\usepackage{xcolor}
+\definecolor{inkblue}{RGB}{30,63,97}
+\definecolor{softblue}{RGB}{226,237,246}
+\usepackage[colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue]{hyperref}
+\hypersetup{pdftitle={Delooping the 3-sphere in homotopy type theory},pdfauthor={Jiatong Yang}}
+\setlist{itemsep=0.2em,topsep=0.35em}
+\setlength{\parskip}{0.25em}
+\linespread{1.05}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{problem}{Problem}
+\newenvironment{proofsketch}{\par\noindent\textit{Proof sketch.}\ }{\hfill$\square$\par}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\RP}{\mathbb{RP}}
+\newcommand{\CP}{\mathbb{CP}}
+\newcommand{\HP}{\mathbb{HP}}
+\newcommand{\HH}{\widetilde H}
+\newcommand{\trunc}[2]{\lVert #2\rVert_{#1}}
+\newcommand{\mere}[1]{\lVert #1\rVert_{-1}}
+\newcommand{\fib}{\operatorname{fib}}
+\newcommand{\cofib}{\operatorname{cofib}}
+\newcommand{\Map}{\operatorname{Map}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\isContr}{\operatorname{isContr}}
+\newcommand{\isEquiv}{\operatorname{isEquiv}}
+\newcommand{\Conn}{\operatorname{Conn}}
+\newcommand{\Pointed}{\mathcal U_*}
+\newcommand{\eqp}{\simeq_*}
+\newcommand{\hpo}{\mathbin{\cup}^{h}}
+\newcommand{\hpb}{\mathbin{\times}^{h}}
+\newcommand{\baseN}{\mathcal N}
+\newcommand{\Loc}{\operatorname{Local}}
+\newcommand{\Sep}{\operatorname{Sep}}
+\newcommand{\Moore}[2]{M(\Z/#1,#2)}
+\newcommand{\Sym}{\mathfrak S}
+\newcommand{\Alt}{\mathfrak A}
+\newcommand{\B}{\mathrm B}
+\newcommand{\pbmark}{\arrow[dr,phantom,very near start,"\lrcorner"]}
+\newcommand{\pomark}{\arrow[dr,phantom,very near end,"\ulcorner"]}
+\title{Delooping the 3-sphere in homotopy type theory}
+\author{Jiatong Yang\\[2pt]\small Qiuzhen College, Tsinghua University\\\small\texttt{yangjt22@mails.tsinghua.edu.cn}}
+\date{14 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct, in univalent type theory with higher inductive types, an explicit pointed connected type $B$ with $\Omega B\eqp S^3$. Finite covers of Seifert types yield two fibre sequences with fibre $S^3$. Cellular homology and Moore-space recognition make their total spaces contractible after inverting $3$ and $10$; fibre preservation and arithmetic fracture then glue the localized bases. The construction and a maximal torus $K(\mathbb Z,2)\to_*B$ with fibre $S^2$ are formalized in Cubical Agda. Classical recognition of deloopings of $S^3$ with a maximal torus identifies the resulting homotopy type with $\mathbb{HP}^\infty$. An internal comparison of the induced multiplication with the Cayley--Dickson $H$-space structure remains open.
+\end{abstract}
+\noindent\textbf{Keywords:} homotopy type theory, delooping, 3-sphere, localization, Cubical Agda.\\
+\textbf{MSC 2020:} 55P60 (primary), 55P35, 03B15.
+
+\input{s1-intro}
+\input{s2-geometry}
+\input{s3-homology}
+\input{s4-construction}
+\input{s5-outlook}
+\appendix
+\input{a-formalization}
+\section*{Acknowledgements}
+I thank Yan for providing the high-performance computing resources and the framework for collaboration among multiple large language models used in this project. I am especially grateful to Kang, who first introduced me to synthetic homotopy theory.
+
+GPT and Claude were used extensively in the mathematical exploration, proof development, and formalization of this work. In particular, GPT suggested the strategy based on localization and arithmetic fracture that led to the construction presented here. Both GPT and Claude assisted with the formalization; Claude also assisted in coordinating this work and drafting the manuscript. I take full responsibility for the mathematical content, the formalization, and the exposition, including any errors or omissions.
+
+\begin{thebibliography}{99}
+\bibitem{hott} The Univalent Foundations Program. \emph{Homotopy Type Theory: Univalent Foundations of Mathematics}. 2013.
+\bibitem{brunerie} G. Brunerie. \emph{On the homotopy groups of spheres in homotopy type theory}. PhD thesis, Universit\'e de Nice, 2016. arXiv:1606.05916.
+\bibitem{cayley} U. Buchholtz and E. Rijke. The Cayley--Dickson construction in homotopy type theory. \emph{Higher Structures} 2(1), 2018, 30--41. arXiv:1610.01134.
+\bibitem{highergroups} U. Buchholtz, F. van Doorn, and E. Rijke. Higher groups in homotopy type theory. \emph{LICS} 2018, 205--214. arXiv:1802.04315.
+\bibitem{cors} J. D. Christensen, M. Opie, E. Rijke, and L. Scoccola. Localization in homotopy type theory. \emph{Higher Structures} 4(1), 2020, 1--32. arXiv:1807.04155.
+\bibitem{scoccola} L. Scoccola. Nilpotent types and fracture squares in homotopy type theory. \emph{Math. Struct. Comput. Sci.} 30(5), 2020, 511--544. arXiv:1903.03245.
+\bibitem{rector} D. L. Rector. Loop structures on the homotopy type of $S^3$. In \emph{Symposium on Algebraic Topology}, Lecture Notes in Math.\ 249, 1971, 99--105.
+\bibitem{mcgibbon} C. A. McGibbon. Which group structures on $S^3$ have a maximal torus? In \emph{Geometric Applications of Homotopy Theory I}, Lecture Notes in Math.\ 657, 1978, 353--360.
+\bibitem{dmw} W. G. Dwyer, H. R. Miller, and C. W. Wilkerson. The homotopic uniqueness of $BS^3$. In \emph{Algebraic Topology, Barcelona 1986}, Lecture Notes in Math.\ 1298, 1987, 90--105.
+\bibitem{yaumaps} D. Yau. Maps to spaces in the genus of infinite quaternionic projective space. In \emph{Categorical Decomposition Techniques in Algebraic Topology}, Progr.\ Math.\ 215, Birkh\"auser, 2004, 293--302. arXiv:math/0209030.
+\bibitem{yau} D. Yau. Loop structures on the homotopy type of $S^3$ revisited. \emph{Michigan Math.\ J.} 53, 2005, 283--290. arXiv:math/0501513.
+\bibitem{cubicalagda} A. Vezzosi, A. M\"ortberg, and A. Abel. Cubical Agda: a dependently typed programming language with univalence and higher inductive types. \emph{Proc.\ ACM Program.\ Lang.} 3 (ICFP), article 87, 2019. doi:10.1145/3341691.
+\bibitem{hurewiczhott} J. D. Christensen and L. Scoccola. The Hurewicz theorem in homotopy type theory. \emph{Algebr.\ Geom.\ Topol.} 23, 2023, 2107--2140. arXiv:2007.05833.
+\bibitem{bm} K.-B. Hou (Favonia), E. Finster, D. R. Licata, and P. L. Lumsdaine. A mechanization of the Blakers--Massey connectivity theorem in homotopy type theory. \emph{LICS} 2016. arXiv:1605.03227.
+\bibitem{cubical} The Cubical Agda Library. \url{https://github.com/agda/cubical}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,70 @@
+\section{Introduction and route}\label{sec:intro}
+
+The loop type $\Omega(B,b)=(b=b)$ of a pointed connected type carries path concatenation and all its associativity, unit and inverse coherences. An $\infty$-group structure on a pointed type $G$ consists of a pointed connected type $B$ and a pointed equivalence $\Omega B\eqp G$ \cite[\S3]{highergroups}. Constructing such a delooping supplies the entire coherent structure at once. Buchholtz and Rijke construct an $H$-space structure on $S^3$ and the quaternionic Hopf fibration \cite{cayley}. In their discussion of further work they write that they ``do not know how to define a delooping of $S^3$ in homotopy type theory'', adding that classically this would be $\HP^\infty$ \cite[\S6]{cayley}. We construct such a delooping internally.
+
+\begin{theorem}\label{thm:main}
+In univalent type theory with higher inductive types, there is an explicit pointed connected type $B$ and a pointed equivalence $\Omega B\eqp S^3$. More precisely, we construct an element of
+\[
+\sum_{B:\Pointed}\bigl(\Conn(B)\times(\Omega B\eqp S^3)\bigr).
+\]
+Moreover, $B$ has a maximal torus: a pointed map $K(\Z,2)\to_*B$ with fibre $S^2$ (Theorem~\ref{thm:torus}). Both statements are formalized in Cubical Agda (Appendix~\ref{app:formal}).
+\end{theorem}
+
+\paragraph{Contribution.}
+The localization theory of Christensen, Opie, Rijke and Scoccola \cite{cors} supplies separated localization and fibre preservation; Scoccola's arithmetic fracture theorem \cite{scoccola} supplies the final reconstruction. The new geometric input consists of explicit finite covers of Seifert types and their circle-bundle maps to $\RP^2$. Cellular homology and Moore-space recognition give the required local contractions, and a common comparison identifies the two localized loop spaces compatibly on their overlap. The sum in Theorem~\ref{thm:main} is untruncated: it specifies $B$, its connectedness and its pointed loop equivalence. Truncated choices of homology representatives and finite CW presentations supply the local contractibility propositions used in the assembly. The delooping is of the underlying pointed sphere. Agreement of its loop multiplication with the Cayley--Dickson multiplication remains open (Problem~\ref{prob:CD}). The maximal torus identifies the classical homotopy type of $B$ with $\HP^\infty$ by the recognition results discussed in \S\ref{sec:outlook}.
+
+\paragraph{Strategy.}
+We construct two fibre sequences with common fibre $S^3$ whose total spaces become contractible after inverting $3$ and $10$, respectively. Fibre preservation then identifies the loops of the localized bases with the corresponding localizations of $S^3$. A third fibre sequence provides a common comparison after inverting $30$, and an arithmetic fracture square glues the bases to obtain $B$.
+
+\paragraph{Origins of the construction.}
+This project grew out of an attempt to pursue the further directions suggested by Buchholtz and Rijke's Cayley--Dickson construction \cite{cayley}. I initially asked GPT to help prove that the resulting multiplication on $S^3$ is homotopy associative. Repeated attempts to construct an associator directly led to higher-dimensional coherence problems that we did not succeed in resolving by that approach. In separate preliminary work, an obstruction-theoretic argument developed with GPT subsequently established the mere existence of an associator. This changed the nature of the problem, but did not supply the full coherent structure sought here: even an explicit choice of associator would still leave the higher coherences required for an $A_\infty$-structure to be constructed.
+
+I therefore redirected the investigation towards constructing a delooping of $S^3$, so that the coherent structure would be supplied by a loop type rather than assembled one coherence at a time. GPT suggested the localization and arithmetic fracture strategy developed in this paper, and the construction was subsequently formalized with the assistance of GPT and Claude. The resulting delooping concerns the underlying pointed sphere; comparison with the original Cayley--Dickson multiplication remains open (Problem~\ref{prob:CD}).
+
+\subsection*{Conventions}
+We write $\Pointed:=\sum_{X:\mathcal U}X$ for pointed types and suppress underlying-type projections. We use classical truncation degrees: $\tau_nX=\trunc nX$, and $X$ is $n$-connected when $\tau_nX$ is contractible. In particular, $\Conn(B):=\isContr(\tau_0B)$ and $S^3$ is $2$-connected. The symbol $\eqp$ denotes a pointed equivalence. For $f:X\to Y$,
+\[
+\fib(f,y):=\sum_{x:X}(f(x)=y),
+\qquad
+\fib(f):=\fib(f,y_0)\quad\text{if $f$ is pointed}.
+\]
+Homology $\HH_*$ is reduced integral cellular homology. For $m,n\geq1$ we put
+\[
+\Moore mn:=\cofib\bigl(\Sigma^{n-1}d_m:S^n\to S^n\bigr),
+\]
+where $d_m:S^1\to S^1$ is the degree-$m$ map; its reduced homology is $\Z/m$ in degree $n$ and zero in other degrees.
+
+For $f:B\to D$ and $g:C\to D$, the homotopy pullback is $B\hpb_DC:=\sum_{b:B}\sum_{c:C}(f(b)=g(c))$. A specified commutative square is \emph{cartesian} when its comparison with this type is an equivalence. The homotopy pushout $B\hpo_AC$ of $B\xleftarrow{f}A\xrightarrow{g}C$ has inclusions $\iota_B,\iota_C$ and paths $\mathsf{glue}(a):\iota_B(fa)=\iota_C(ga)$. Cartesian squares are marked by $\lrcorner$ at the northwest corner and pushout squares by $\ulcorner$ at the southeast corner.
+
+Write $L_m:=L_{d_m}$ for localization \emph{inverting $m$}, with unit $\eta^m_X:X\to L_mX$. A type $Z$ is $m$-local if precomposition with $d_m$ is an equivalence on $S^1\to Z$; equivalently, every loop-power map $p\mapsto p^m$ is an equivalence. A map $g$ is an $L_m$-equivalence if $L_mg$ is an equivalence, or equivalently if precomposition with $g$ is an equivalence on maps into every $m$-local type. A type $A$ is $L_m$-connected if $L_mA\simeq1$. The separated localization is $L'_m:=L_{\Sigma d_m}$, with unit $\eta'^m_X$. For pointed simply connected types, $L_m$ inverts $m$ on homotopy groups \cite[Thm.~4.25]{cors}; for example, $\pi_3(L_3S^3)\cong\Z[1/3]$.
+
+\subsection{The route}
+Let $R=\RP^2$, $\baseN=\tau_2R$ and $\eta_2:R\to\baseN$ be the truncation unit. The proof has six steps.
+
+\begin{enumerate}[label=(S\arabic*),leftmargin=3em]
+\item \emph{Common fibre} (\S\ref{sec:truncation}). $F:=\fib(\eta_2)\simeq S^3$, by the complex Hopf fibration and a truncation-square theorem.
+\item \emph{Finite spans} (\S\ref{sec:seifert}--\ref{sec:truncation}). For $c\in\{O,I\}$ there are spans $R\xleftarrow{q_c}A_c\xrightarrow{p_c}C_c$ with $q_c$ a circle bundle, $p_c$ a finite cover with $N_O=3$, $N_I=10$ sheets, and $\pi_2(A_c)=0$, such that the two naturality squares to the spans of truncations are cartesian. Descent along the pushouts $E_c=R\hpo_{A_c}C_c$, $P_c=\baseN\hpo_{\tau_1A_c}\tau_1C_c$ yields fibre sequences $F\to E_c\to P_c$.
+\item \emph{Homology and recognition} (\S\ref{sec:homology}--\ref{sec:construction}). $E_c$ and $P_c$ are simply connected, and $L_3E_O\simeq1$, $L_{10}E_I\simeq1$.
+\item \emph{Fibre preservation} (\S\ref{sec:construction}). If $f:E\to Y$ with $Y$ simply connected, then $L_m\fib(f,y)\simeq\fib(L_mf,\eta^m_Yy)$. Consequently $\Omega L_mP_c\simeq L_mF$ whenever $L_mE_c\simeq1$.
+\item \emph{Fracture} (\S\ref{sec:construction}). For simply connected $X$ and coprime $m,n$, the unit $X\to L_mX\hpb_{L_{mn}X}L_nX$ is an equivalence. We apply this to the $2$-connected type $F$.
+\item \emph{Common comparison} (\S\ref{sec:construction}). Pushouts $E_*=E_O\hpo_RE_I$, $P_*=P_O\hpo_{\baseN}P_I$ give a third fibre sequence $F\to E_*\to P_*$ with $L_{30}E_*\simeq1$, and the localized loop equivalences commute with the induced maps.
+\end{enumerate}
+
+\paragraph{Assembly.}
+Put $Q_O=L_3P_O$, $Q_I=L_{10}P_I$, $T=L_{30}P_*$, with maps $u_O:Q_O\to T$ and $u_I:Q_I\to T$ induced by $P_O\to P_*\leftarrow P_I$. Define
+\begin{equation}\label{eq:B}
+B=Q_O\hpb_TQ_I=\sum_{x:Q_O}\sum_{y:Q_I}(u_Ox=u_Iy),
+\qquad
+\begin{tikzcd}[column sep=large,row sep=large]
+B \arrow[r] \arrow[d] \pbmark & Q_O \arrow[d,"u_O"] \\
+Q_I \arrow[r,"u_I"'] & T.
+\end{tikzcd}
+\end{equation}
+Looping preserves pointed homotopy pullbacks, and (S4)--(S6) identify the loop cospan with $L_3F\to L_{30}F\leftarrow L_{10}F$. Hence
+\begin{equation}\label{eq:loop-chain}
+\Omega B\simeq\Omega Q_O\hpb_{\Omega T}\Omega Q_I\simeq L_3F\hpb_{L_{30}F}L_{10}F\simeq F\simeq S^3,
+\end{equation}
+the third equivalence being (S5). Connectedness of $B$ follows from connectedness of $Q_O,Q_I$ and simple connectedness of $T$. The multiplication on $S^3$ is the transport of loop concatenation along the pointed correction $\varepsilon$ of \eqref{eq:loop-chain} (\S\ref{sec:construction}).
+
+\paragraph{The numbers 3 and 10.}
+They are the indices $[\Sym_4:D_8]=3$ and $[\Alt_5:D_6]=10$ (dihedral subgroups of orders $8$ and $6$), which count the sheets of the covers in (S2). Their coprimality is the arithmetic input in (S5).

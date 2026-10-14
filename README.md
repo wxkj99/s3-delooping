@@ -4,7 +4,9 @@ A Cubical Agda formalization of a connected pointed delooping of S³, together w
 
 **Jiatong Yang** · Qiuzhen College, Tsinghua University · <yangjt22@mails.tsinghua.edu.cn>
 
-This repository distributes the formalization sources and reproducibility tooling. The manuscript and the local `docs/` tree are maintained separately and are not included in the repository.
+[Paper (PDF)](docs/s3-delooping-paper.pdf) · [LaTeX source](docs/paper/main.tex)
+
+This repository distributes the formalization sources, reproducibility tooling, and the accompanying paper. Other local documentation, audit records, and verification logs are maintained separately.
 
 ## Results
 
@@ -25,7 +27,7 @@ Finite Seifert covers of indices 3 and 10 give compatible fibre sequences with f
 
 ### Scope
 
-The formalization uses `--safe --cubical --guardedness`, with `--lossy-unification` in some auxiliary modules, and adds no axioms. It does **not** establish an equivalence with an independently defined HP∞ model or compatibility of the loop equivalence with the Cayley–Dickson H-space multiplication. Classically, Dwyer–Miller–Wilkerson, Theorem 1.1 and Remark 1.2, together with the Rector–McGibbon maximal-torus criterion, identify this homotopy type with HP∞. That recognition argument is cited in the separately maintained paper, not formalized here.
+The formalization uses `--safe --cubical --guardedness`, with `--lossy-unification` in some auxiliary modules, and adds no axioms. It does **not** establish an equivalence with an independently defined HP∞ model or compatibility of the loop equivalence with the Cayley–Dickson H-space multiplication. Classically, Dwyer–Miller–Wilkerson, Theorem 1.1 and Remark 1.2, together with the Rector–McGibbon maximal-torus criterion, identify this homotopy type with HP∞. That recognition argument is cited in the accompanying paper, not formalized here.
 
 ## Check the formalization
 
@@ -59,7 +61,7 @@ Vendoring is an offline distribution choice, not a requirement of the proof. The
 CUBICAL_DIR=/absolute/path/to/cubical bash agda/check.sh --configure-only
 ```
 
-The final import closure contains 467 project modules and 416 external Cubical modules, excluding compiler builtins. The distribution contains formalization sources and tooling, but no manuscript, PDF, local documentation tree, compiler interfaces, or machine-local configuration.
+The final import closure contains 467 project modules and 416 external Cubical modules, excluding compiler builtins. The distribution contains formalization sources, tooling, and the paper's LaTeX sources and PDF. Other local documentation, compiler interfaces, and machine-local configuration are excluded.
 
 | Path | Contents |
 | --- | --- |
@@ -67,7 +69,21 @@ The final import closure contains 467 project modules and 416 external Cubical m
 | `agda/check.sh`, `agda/tools/` | Offline configuration, bounded checking, dependency/options audits, and tests |
 | `agda/roots.txt`, `agda/deps.lock.json`, `agda/deps/` | Entry-point manifest, dependency lock, and file checksums |
 | `vendor/cubical/` | Full official dependency source and original license |
+| `docs/paper/` | Paper LaTeX sources and build script |
+| `docs/s3-delooping-paper.pdf` | Compiled paper |
+
+## Build the paper
+
+With a LaTeX installation providing `pdflatex` and the packages used by `main.tex`, Bash, and GNU `timeout`, run:
+
+```sh
+bash docs/paper/build.sh
+```
+
+The script compiles three times, checks for layout and reference warnings, and writes `docs/s3-delooping-paper.pdf`. Intermediate files remain in the ignored `docs/paper/.build/` directory.
 
 ## Licensing
 
-Project-owned source is licensed under the [MIT License](LICENSE), copyright © 2026 Jiatong Yang. This does not relicense vendored code or override third-party file terms. Cubical retains its own MIT license and SPDX-marked BSD-3-Clause exception; see [third-party notices](THIRD_PARTY_NOTICES.md) and the [original dependency license](vendor/cubical/LICENSE).
+Project-owned formalization code and tooling are licensed under the [MIT License](LICENSE), copyright © 2026 Jiatong Yang. This does not relicense vendored code or override third-party file terms. Cubical retains its own MIT license and SPDX-marked BSD-3-Clause exception; see [third-party notices](THIRD_PARTY_NOTICES.md) and the [original dependency license](vendor/cubical/LICENSE).
+
+The paper's LaTeX sources and PDF are copyright © 2026 Jiatong Yang and are not covered by the code's MIT license.

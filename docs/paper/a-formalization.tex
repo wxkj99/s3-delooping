@@ -1,0 +1,256 @@
+\section{Formalization}\label{app:formal}
+
+\subsection{Statements and scope}
+The development uses Cubical Agda \cite{cubicalagda} and the Cubical library \cite{cubical}. The entry \path{agda/src/DeloopS3/Assembly/Complete.agda} exports
+\[
+\texttt{Deloop-S3}:
+\sum_{B:\mathcal U_{0,*}}
+  \bigl(\Conn(B)\times(\Omega B\eqp S^3)\bigr).
+\]
+Here $\mathcal U_{0,*}$ is \texttt{Pointed} at level zero;
+$\Conn(B)$ is \texttt{isConnected 2 (typ B)}, and the pointed sphere
+is written $(\texttt{S}_{+}\;3,\mathsf{north})$ in the source.
+The sum is untruncated. The term has no module parameters and uses no
+postulates. The second entry, \path{agda/src/DeloopS3/HPInf/Complete.agda},
+exports the pointed map \texttt{t}, its fibre equivalence \texttt{t-fiber},
+and the combined declaration
+\texttt{S\textsuperscript{3}-delooping-with-maximal-torus}.
+The latter uses the same concrete $B$: its map is $K(\Z,2)\to_*B$
+and its fibre over the basepoint is equivalent to $S^2$. It does not assert
+an equivalence with an independently defined $\mathbb H P^\infty$.
+The pointed loop equivalence is obtained by translating the source loop
+space before applying the unpointed equivalence
+(\texttt{point-loop-equivalence} in \path{Assembly/DefB.agda}); it does
+not assert that the unmodified comparison preserves the basepoint or that
+it respects the Cayley--Dickson multiplication.
+Both entries use \texttt{--safe --cubical --guardedness}.
+Some auxiliary modules use \texttt{--lossy-unification}, an elaboration
+option with no additional axioms.
+
+The formalized fracture theorem assumes $2$-connectedness, which suffices
+for $F\simeq S^3$; the simply connected theorem cited in the paper is the
+more general result of \cite[Thm.~5.4]{scoccola}. Moore recognition is
+formalized for arbitrary positive $m$ and $2$-connected finite CW types
+of dimension at most $4$ with the stated homology profile. The bottom-Moore
+cofibre argument and the resulting contractions are formalized for the
+$O$ and $I$ profiles used here. Classical recognition uses
+\cite[Rem.~1.2]{dmw}, without a separate genus-membership assumption;
+it is cited, not formalized. Independent $\mathbb H P^\infty$ and Cayley--Dickson
+multiplication comparisons remain outside the exports.
+
+The geometric Mayer--Vietoris interface supplies exactness for $0\leq n<5$,
+with boundary $H_{n+1}\to H_n$. Its naturality comparisons establish
+$H_3\to H_2$ naturality for maps between spans and $H_2\to H_1$ naturality
+for self-span maps, retaining their comparison homotopies. These are the
+degrees used in \S\ref{sec:homology}. The all-degree chain equivalence
+and these degree-specific geometric comparisons have separate exports.
+
+\medskip
+\noindent\textbf{Artifact.} The formalization and accompanying paper are hosted at \url{https://github.com/wxkj99/s3-delooping}. The formalization source snapshot used for this paper is commit \href{https://github.com/wxkj99/s3-delooping/tree/2eda93321fa89daa4875e6921db3b5fae19f75f2}{\texttt{2eda933}}. The repository contains the formalization, checking tools, pinned Cubical dependency, and the paper's \LaTeX{} sources and PDF. Local audit documents and verification records are maintained separately.
+
+\subsection{Indexing conventions}
+The paper uses classical truncation degrees. The library uses the following
+indices.
+\begin{center}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Mathematical notation & Library notation \\
+\midrule
+$X$ connected & \texttt{isConnected 2 X} \\
+$X$ simply connected & \texttt{isConnected 3 X} \\
+$X$ $2$-connected & \texttt{isConnected 4 X} \\
+$\tau_1X$ & \texttt{hLevelTrunc 3 X} \\
+$\tau_2X$ & \texttt{hLevelTrunc 4 X} \\
+\bottomrule
+\end{tabular}
+\end{center}
+The source notation $\texttt{PT.}\lVert X\rVert_1$ denotes propositional
+truncation. The declaration \texttt{Moore m k} counts suspensions from
+$S^1$: it denotes $\Moore{m}{k+1}$ in this paper. In particular,
+\texttt{Moore 2 1} and \texttt{Moore 10 2} denote $\Moore22$ and
+$\Moore{10}3$.
+
+\subsection{Statement-to-declaration correspondence}
+Module paths below are relative to \path{agda/src/DeloopS3/}, except that
+paths starting with \path{Cubical/} are relative to
+\path{vendor/cubical/}. Declaration names include any enclosing named
+parameterized module. Each listed file is in the active source tree.
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{\dimexpr0.71\textwidth-8pt\relax}@{}}
+\toprule
+Paper statement & Exported declaration and module \\
+\midrule
+\endfirsthead
+\toprule
+Paper statement & Exported declaration and module (continued) \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Theorem~\ref{thm:main} & \texttt{Deloop-S3}\newline
+  \path{Assembly/Complete.agda} \\[3pt]
+Truncation square & \texttt{TruncationSquare.cartesian}\newline
+  \path{Sphere/TruncationCartesian.agda} \\[3pt]
+Hopf reflection & \texttt{hopfReflection}, \texttt{sphereUnitFiber}\newline
+  \path{Sphere/HopfUnit.agda} \\[3pt]
+Common fibre $F\simeq S^3$ & \texttt{RP\textsuperscript{2}-unit-fiber}\newline
+  \path{Sphere/RP2UnitFiber.agda} \\[3pt]
+Finite covers and total-space equivalences & \texttt{short-total}, \texttt{p}, \texttt{p-fibres}, \texttt{p-is-cover}\newline
+  \path{Cert/Interpret/Done.agda} \\[3pt]
+Twisted circle bundle & \texttt{Bundle.circleFibres}, \texttt{Bundle.baseFibre}\newline
+  \path{Seifert/TwistedBundle/Cell.agda} \\[3pt]
+Clutching coefficient $-2e$ in the calibrated chart & \texttt{Calibrated.coefficient}, \texttt{Calibrated.calibratedTotal}\newline
+  \path{Seifert/TwistedBundle/TwoCap.agda} \\[3pt]
+$\pi_2(M_e)=0$ for $e\ne0$ & \texttt{pi\textsubscript{2}-M\textsubscript{e}-zero}\newline
+  \path{Seifert/TwistedBundle/Pi2Zero.agda} \\[3pt]
+Dihedral-character rigidity & \texttt{dihedral-character-rigid}\newline
+  \path{Bridge/SpanPi1/Character.agda} \\[3pt]
+Source character & \texttt{source-character}\newline
+  \path{Bridge/SpanPi1/SourceCharacter.agda} \\[3pt]
+Nonabelian image and kernel witness & \texttt{subgroup-image-nonabelian}, \texttt{normal-core-lift}\newline
+  \path{Bridge/SpanPi1/CoverWitnesses.agda} \\[3pt]
+Identification of the kernel character & \texttt{cover-kernel-character-from-source}\newline
+  \path{Bridge/SpanPi1/KernelCharacter.agda} \\[3pt]
+Simple connectedness of the total pushouts & \texttt{X-simple}\newline
+  \path{Bridge/SpanPi1/Target.agda} \\[3pt]
+Cartesian span squares & \texttt{left-cartesian}, \texttt{right-cartesian}\newline
+  \path{Assembly/MixedTruncation.agda} \\[3pt]
+Fibre sequences $F\to E_c\to P_c$ & \texttt{local-fibre}\newline
+  \path{Assembly/LocalCubes.agda} \\[3pt]
+Actual cellular homology & \texttt{CW-AugChainComplex}, $\widetilde{\texttt H}^{\texttt{skel}}$\newline
+  \path{Cubical/CW/ChainComplex.agda};\newline
+  $\widetilde{\texttt H}^{\texttt{cw}}$\newline
+  \path{Cubical/CW/Homology/Base.agda} \\[3pt]
+Actual Hurewicz map and theorem & \texttt{HurewiczMapUntrunc}, \texttt{HurewiczTheorem}\newline
+  \path{Cubical/CW/HurewiczTheorem.agda} \\[3pt]
+Geometric exactness, $n<5$ & \texttt{SpanSequenceData}, \texttt{GeometricPushoutLES}\newline
+  \path{Bridge/DMCExactness/Geometric.agda};\newline
+  \texttt{finite-pushoutLES-merely}\newline
+  \path{Bridge/CellularPushout/PrismChains/Packaging/Unconditional.agda} \\[3pt]
+Boundary naturality, $H_3\to H_2$ & \texttt{TotalWindowBoundary.geometric-top-boundary-natural}\newline
+  \path{Bridge/DegreeSpan/ContinuousBoundaryNatural.agda};\newline
+  \texttt{initial-boundary-natural}\newline
+  \path{Bridge/DegreeSpan/InitialBoundaryNatural.agda} \\[3pt]
+Self-span naturality, $H_2\to H_1$ & \texttt{finite-same-span-boundary-natural}\newline
+  \path{Bridge/DegreeSpan/LowerBoundaryDescent.agda} \\[3pt]
+Component homology & \texttt{component-H\textsubscript{1}-groups},
+  \texttt{source-H\textsubscript{2}-zero}, \texttt{target-H\textsubscript{2}-zero},
+  \texttt{source-H\textsubscript{3}}, \texttt{target-H\textsubscript{3}}\newline
+  \path{Bridge/Profile/ComponentHomologyComplete.agda} \\[3pt]
+Covering-degree comparison & \texttt{comparisons}\newline
+  \path{Bridge/DegreeSpan/LeftComparisons.agda};\newline
+  \texttt{cover-degree-from-H2}\newline
+  \path{Bridge/DegreeSpan/CoverDegreeFromH2.agda} \\[3pt]
+Four-dimensional Moore recognition & \texttt{recognize-moore3}, \texttt{moore3-map-isEquiv}\newline
+  \path{Bridge/Profile/MooreRecognition.agda} \\[3pt]
+Bottom cofibre for the $I$ profile & \texttt{bottom-cofib-profile}\newline
+  \path{Bridge/Profile/BottomCofibre.agda} \\[3pt]
+Local contractions & \texttt{O-profile-contraction}, \texttt{I-profile-contraction}\newline
+  \path{Bridge/Profile/Contraction.agda} \\[3pt]
+Fibre preservation over simply connected bases & \texttt{localization-preserves-fiber}, \texttt{fiber-comparison}\newline
+  \path{Local/RouteB2.agda} \\[3pt]
+Fracture for $2$-connected types & \texttt{arithmetic-fracture-2-connected}\newline
+  \path{Local/Fracture/Fracture.agda} \\[3pt]
+Assembly of the delooping & \texttt{B-def}\newline
+  \path{Assembly/DefB.agda};\newline
+  \texttt{Deloop-final}\newline
+  \path{Assembly/Final.agda} \\[3pt]
+Recognition of the specified $3/10$ fracture cone & \texttt{unit-aware-fracture}\newline
+  \path{HPInf/UnitFracture.agda} \\[3pt]
+Cartesianness of \eqref{diag:HP} & \texttt{common-square-cartesian}\newline
+  \path{HPInf/RelativeFracture.agda} \\[3pt]
+Maximal torus (Theorem~\ref{thm:torus}) & \texttt{t}, \texttt{t-fiber}, \texttt{maximal-torus}\newline
+  \path{HPInf/Complete.agda} \\
+\end{longtable}
+\endgroup
+
+\subsection{Reproduction and development size}
+\paragraph{Dependency identity.}
+The official Cubical commit is\newline
+\path{87af036ebd1c87956cf08fea44e62c7cf76392ca}, with parent\newline
+\path{3d828afcac588414920565ad22d08d3dcdf02249}.
+The full unmodified snapshot, including original licenses, is in
+\path{vendor/cubical/}, locked by \path{agda/deps.lock.json}; official
+provenance was verified through the GitHub API. The identifier
+\texttt{cubical-0.9} does not mean release \texttt{v0.9}, which lacks the
+required CW homology and Hurewicz modules. \path{agda/src/DeloopS3/Compat/Whitehead.agda}
+reexports three declarations from \path{Cubical.Homotopy.Whitehead},
+without copied mathematical types or proofs. Five files have import-only changes;
+proof bodies and vendor sources are unchanged. The closure has 467 project and 416 official modules (883 total, excluding compiler builtins).
+
+\paragraph{Reproduction.}
+The checking scripts require Agda 2.8.0.2, Python 3.9 or later, Bash,
+\texttt{flock}, and GNU \texttt{timeout}. From the root of a repository checkout, run:
+\begin{quote}\small
+\begin{verbatim}
+bash agda/check.sh --configure-only
+DELOOP_TIMEOUT=18000 bash agda/check.sh
+\end{verbatim}
+\end{quote}
+The first command verifies the compiler version and dependency manifest
+and creates a machine-local library registry. The second checks both
+entries listed in \path{agda/roots.txt}. The runner uses this registry
+and disables default libraries. It resolves paths relative to the
+checkout, supports paths containing spaces, and performs no downloads.
+Each check runs with one RTS capability and a 12\,GiB heap limit;
+\texttt{DELOOP\_TIMEOUT} sets the per-entry time limit in seconds.
+
+\paragraph{Verification.}
+The official-dependency build began in a relocated directory containing
+spaces with an empty user home and no project or library interfaces.
+Five focused checks and both final entries exited with code zero;
+successive stages reused only interfaces generated within that run.
+The complete sequence took about 56 minutes, with 3,109 seconds for the
+assembly stage and 54 seconds for the maximal-torus stage. Peak recorded
+child-process RSS was approximately 12.4\,GiB under a 12\,GiB GHC heap cap.
+The configuration and audit tools pass 48 regression tests.
+The repository sources preserve all non-comment program lines of the checked
+source; their only differences are comment and blank-line cleanup.
+Both cleaned entry points subsequently passed an incremental
+recheck with exit code zero.
+Commands, hashes and measurements are retained in the author's local
+verification record, \path{docs/verification/verification.json}; this file
+is not included in the source repository.
+
+\paragraph{Semantic audit.}
+The author's local audit record, \path{docs/formalization-audit.md},
+records the checked statement-to-source interfaces, assumptions, and coverage
+limits separately from compilation and portability status. No target substitution was found in those
+interfaces. This is not an exhaustive independent review of the deep
+cubical coherence proofs.
+
+\paragraph{Size.}
+The active tree \path{agda/src} contains 467 Agda modules and 64,352 lines,
+including comments and blank lines; \path{agda/archive} is excluded.
+The two generated certificate-data modules
+\path{Cert/Octa3.agda} and \path{Cert/Icosa10.agda} account for 453 of
+these lines (27,105 bytes). The modules under \path{Cert/Input/} implement
+the geometric interpretation of the input data and are included in the
+remaining proof source. The totals can be reproduced from the repository
+root by the following one-line command, whose output is the module count
+followed by the line count.
+\begin{quote}\scriptsize
+\begin{verbatim}
+find agda/src -name '*.agda' -exec wc -l {} + | awk '$2!="total"{n++;s+=$1}END{print n,s}'
+\end{verbatim}
+\end{quote}
+
+\subsection{Finite certificates}
+The certificate data are included as Agda declarations in
+\path{agda/src/DeloopS3/Cert/Octa3.agda} and
+\path{agda/src/DeloopS3/Cert/Icosa10.agda}. They specify permutation tables,
+coset representatives, Schreier spanning trees, boundary words, filling
+multiplicities, and the cancellation and shear data used in the short covers.
+Declarations such as \texttt{group-ok}, \texttt{cosets-ok},
+\texttt{graph-ok}, and \texttt{normalization-ok} validate the finite
+computations by reduction against \path{Cert/Check.agda}.
+
+The modules under \path{Cert/Input/} connect these checked data to the
+covering diagrams. Those under \path{Cert/Interpret/} construct equivalences
+of higher inductive types and the required boundary comparisons.
+\path{Cert/Interpret/Done.agda} exports \texttt{short-total}, \texttt{p},
+and \texttt{p-fibres}. Agda checks both the finite certificate assertions
+and this semantic interpretation used by the final theorem.
