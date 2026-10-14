@@ -1,0 +1,5 @@
+*.agdai
+*~
+\.*#*
+\#*
+/Cubical/Everything.agda

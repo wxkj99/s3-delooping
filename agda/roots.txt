@@ -1,0 +1,3 @@
+# Default check roots, relative to agda/. Both are checked under one lock.
+src/DeloopS3/Assembly/Complete.agda
+src/DeloopS3/HPInf/Complete.agda

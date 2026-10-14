@@ -1,0 +1,155 @@
+module Cubical.Data.Fin.Base where
+
+open import Cubical.Foundations.Prelude
+open import Cubical.Foundations.Function
+open import Cubical.Foundations.HLevels
+open import Cubical.Foundations.Pointed
+
+import Cubical.Data.Empty as ⊥
+open import Cubical.Data.Nat using (ℕ ; zero ; suc ; _+_ ; znots ; tt)
+open import Cubical.Data.Nat.Order
+open import Cubical.Data.Nat.Order.Inductive
+open import Cubical.Data.Sigma
+open import Cubical.Data.Sum using (_⊎_; _⊎?_; inl; inr)
+
+open import Cubical.Relation.Nullary
+
+-- Finite types.
+--
+-- Currently it is most convenient to define these as a subtype of the
+-- natural numbers, because indexed inductive definitions don't behave
+-- well with cubical Agda. This definition also has some more general
+-- attractive properties, of course, such as easy conversion back to
+-- ℕ.
+Fin : ℕ → Type₀
+Fin n = Σ[ m ∈ ℕ ] (m <ᵗ n)
+
+private
+  variable
+    ℓ : Level
+    k : ℕ
+
+fzero : Fin (suc k)
+fzero = (zero , tt)
+
+fone : Fin (suc (suc k))
+fone = (suc zero , tt)
+
+fzero≠fone : ¬ fzero {k = suc k} ≡ fone
+fzero≠fone p = znots (cong fst p)
+
+-- It is easy, using this representation, to take the successor of a
+-- number as a number in the next largest finite type.
+fsuc : Fin k → Fin (suc k)
+fsuc (k , l) = (suc k , l)
+
+finj : {k : ℕ} → Fin k → Fin (suc k)
+finj (m , l) = (m , <ᵗ-trans-suc {n = m} l)
+
+-- predecessors too
+predFin : (m : ℕ) → Fin (suc (suc m)) → Fin (suc m)
+predFin m (zero , w) = fzero
+predFin m (suc n , w) = (n , w)
+
+-- Conversion back to ℕ is trivial...
+toℕ : {k : ℕ} → Fin k → ℕ
+toℕ = fst
+
+-- ... and injective.
+toℕ-injective : {k : ℕ} {fj fk : Fin k}  → toℕ {k} fj ≡ toℕ {k} fk → fj ≡ fk
+toℕ-injective {k} {fj = fj} {fk} = Σ≡Prop (λ x → isProp<ᵗ {x} {k})
+
+-- Conversion from ℕ
+fromℕ≤ᵗ : (m n : ℕ) → m ≤ᵗ n → Fin (suc n)
+fromℕ≤ᵗ m n t = m , t
+
+-- A case analysis helper for induction.
+fsplit
+  : ∀(fj : Fin (suc k))
+  → (fzero ≡ fj) ⊎ (Σ[ fk ∈ Fin k ] fsuc fk ≡ fj)
+fsplit {n} (0 , k<sn)
+  = inl (toℕ-injective {k = suc n} {fj = fzero} {fk = (0 , k<sn)} refl)
+fsplit {n} (suc k , k<sn)
+  = inr ((k , k<sn)
+  , toℕ-injective {k  = suc n} {fj = fsuc (k , k<sn)} {fk = (suc k , k<sn)} refl)
+
+inject< : ∀ {m n} (m<n : m < n) → Fin m → Fin n
+inject< {m} {n} m<n (k , k<m) = k , <ᵗ-trans {k} {m} {n} k<m (<→<ᵗ m<n)
+
+injectSuc : {n : ℕ} → Fin n → Fin (suc n)
+fst (injectSuc {n = n} (x , p)) = x
+snd (injectSuc {n = suc n} (x , p)) = <ᵗ-trans-suc {n = x} p
+
+flast : {k : ℕ} → Fin (suc k)
+flast {k = k} = (k , <ᵗsuc {k})
+
+-- Fin 0 is empty
+¬Fin0 : ¬ Fin 0
+¬Fin0 ()
+
+-- The full inductive family eliminator for finite types.
+elim
+  : ∀(P : ∀(k : ℕ) → Fin k → Type ℓ)
+  → (∀{k} → P (suc k) fzero)
+  → (∀{k} {fn : Fin k} → P k fn → P (suc k) (fsuc fn))
+  → {k : ℕ} → (fn : Fin k) → P k fn
+elim P fz fs {zero} fn = ⊥.rec (¬Fin0 fn)
+elim P fz fs {suc k} fj
+  = case fsplit fj return (λ _ → P (suc k) fj) of λ
+  { (inl p)        → subst (λ z → P (suc k) z) p (fz {k})
+  ; (inr (fk , p)) → subst (λ z → P (suc k) z) p (fs (elim P fz fs fk))
+  }
+
+any? : ∀ {n} {P : Fin n → Type ℓ} → (∀ i → Dec (P i)) → Dec (Σ (Fin n) P)
+any? {n = zero}  {P = _} P? = no (λ (x , _) → ¬Fin0 x)
+any? {n = suc n} {P = P} P? =
+  mapDec
+    (λ
+      { (inl P0) → fzero , P0
+      ; (inr (x , Px)) → fsuc x , Px
+      }
+    )
+    (λ n h → n (helper h))
+    (P? fzero ⊎? any? {n = n} (P? ∘ fsuc))
+  where
+    helper : Σ (Fin (suc n)) P → P fzero ⊎ Σ (Fin n) λ z → P (fsuc z)
+    helper (x , Px) with fsplit x
+    ... | inl x≡0 = inl (subst P (sym x≡0) Px)
+    ... | inr (k , x≡sk) = inr (k , subst P (sym x≡sk) Px)
+
+FinPathℕ : {n : ℕ} (x : Fin n) (y : ℕ) → fst x ≡ y → Σ[ p ∈ _ ] (x ≡ (y , p))
+FinPathℕ {n = n} x y p .fst = subst (λ z → z <ᵗ n) p (x .snd)
+FinPathℕ {n = n} x y p .snd = Σ≡Prop (λ z → isProp<ᵗ {z} {n}) p
+
+FinVec : (A : Type ℓ) (n : ℕ) → Type ℓ
+FinVec A n = Fin n → A
+
+FinFamily : (n : ℕ) (ℓ : Level) → Type (ℓ-suc ℓ)
+FinFamily n ℓ = FinVec (Type ℓ) n
+
+FinFamily∙ : (n : ℕ) (ℓ : Level) → Type (ℓ-suc ℓ)
+FinFamily∙ n ℓ = FinVec (Pointed ℓ) n
+
+predFinFamily : {n : ℕ} → FinFamily (suc n) ℓ → FinFamily n ℓ
+predFinFamily A n = A (finj n)
+
+predFinFamily∙ : {n : ℕ} → FinFamily∙ (suc n) ℓ → FinFamily∙ n ℓ
+fst (predFinFamily∙ A x) = predFinFamily (fst ∘ A) x
+snd (predFinFamily∙ A x) = snd (A _)
+
+prodFinFamily : (n : ℕ) → FinFamily (suc n) ℓ → Type ℓ
+prodFinFamily zero A = A fzero
+prodFinFamily (suc n) A = prodFinFamily n (predFinFamily A) × A flast
+
+prodFinFamily∙ : (n : ℕ) → FinFamily∙ (suc n) ℓ → Pointed ℓ
+fst (prodFinFamily∙ n A) = prodFinFamily n (fst ∘ A)
+snd (prodFinFamily∙ zero A) = snd (A fzero)
+snd (prodFinFamily∙ (suc n) A) =
+  snd (prodFinFamily∙ n (predFinFamily∙ A)) , snd (A flast)
+
+-- summation
+sumFinGen : ∀ {ℓ} {A : Type ℓ} {n : ℕ}
+  (_+_ : A → A → A) (0A : A) (f : Fin n → A) → A
+sumFinGen {n = zero} _+_ 0A f = 0A
+sumFinGen {n = suc n} _+_ 0A f =
+  f flast + (sumFinGen {n = n}) _+_ 0A ((f ∘ injectSuc))

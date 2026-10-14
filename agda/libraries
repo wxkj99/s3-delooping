@@ -1,0 +1,4 @@
+# Portable example: Agda resolves these entries relative to the working directory.
+# Use from agda/ only. check.sh instead generates and uses .local/libraries.
+../vendor/cubical/cubical.agda-lib
+delooping.agda-lib

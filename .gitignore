@@ -1,0 +1,56 @@
+# Agda interfaces and machine-local configuration
+_build/
+*.agdai
+.local/
+
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local documentation and manuscripts are not published in this repository
+/docs/
+
+# Paper and other generated build files
+.build/
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.synctex.gz
+*.toc
+
+# Logs and temporary files
+logs/
+*.log
+tmp/
+temp/
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Generated archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.tar.bz2
+*.tar.xz
+*.7z
+
+# Local credentials and secrets
+.env
+.env.*
+!.env.example
+secrets/
+credentials/
+*.pem
+*.key
+*.p12
+*.pfx
+.netrc

@@ -1,0 +1,4 @@
+name: delooping
+include: src
+depend: cubical-0.9
+flags: --safe --cubical --no-import-sorts -WnoUnsupportedIndexedMatch --guardedness
